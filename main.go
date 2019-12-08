@@ -16,25 +16,23 @@ func main() {
 	h2 := "/Users/Steve/Dropbox/dev/hosts/data/yoyo.org/hosts"
 
 	h1bytes, err := ioutil.ReadFile(h1)
-	h2bytes, err := ioutil.ReadFile(h2)
-
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
+	checkerror(err)
 
 	host1lines := strings.Split(string(h1bytes), "\n")
 	host1lines = normalize(host1lines)
 	fmt.Println("Hosts1 length:", len(host1lines))
 
+	h2bytes, err := ioutil.ReadFile(h2)
+	checkerror(err)
+
 	host2lines := strings.Split(string(h2bytes), "\n")
 	host2lines = normalize(host2lines)
 	fmt.Println("Hosts2 length:", len(host2lines))
 
-        intersection := intersect.Simple(host1lines, host2lines)
+	intersection := intersect.Simple(host1lines, host2lines)
 
-        fmt.Println("intersection:", intersection)
-        fmt.Println("intersection length:", len(intersection))
+	fmt.Println("intersection:", intersection)
+	fmt.Println("intersection length:", len(intersection))
 
 }
 
@@ -72,4 +70,11 @@ func notcomment(s string) bool {
 
 func scrub(s string, r string) string {
 	return strings.ReplaceAll(s, r, "")
+}
+
+func checkerror(err error) {
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }
