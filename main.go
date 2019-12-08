@@ -31,10 +31,10 @@ func main() {
 	host2lines = normalize(host2lines)
 	fmt.Println("Hosts2 length:", len(host2lines))
 
-	i := intersect.Simple(host1lines, host2lines)
+        intersection := intersect.Simple(host1lines, host2lines)
 
-	fmt.Println("intersection:", i)
-	fmt.Println("intersection length:", len(i))
+        fmt.Println("intersection:", intersection)
+        fmt.Println("intersection length:", len(intersection))
 
 }
 
