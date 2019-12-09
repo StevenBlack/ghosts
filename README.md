@@ -1,5 +1,5 @@
-# Hostscompare
+# hostsTools
 
-A homegrown utility in Go to compare hosts files, and report on their commonalities.
+Utility in Go to work with hosts files.
 
 **Take note!**  This is nascent. Just spinning this up. Not yet fit for consumption.
