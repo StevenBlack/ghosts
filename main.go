@@ -16,10 +16,32 @@ type Hosts struct {
 	domains []string
 }
 
-func (h Hosts) normalize(slc []string) []string {
+func (h *Hosts) process() []string {
+	slc := strings.Split(string(h.raw), "\n")
+
+	// Part 1: basic cleanup
+	for i := range slc {
+		// remove embedded comments
+		slc[i] = strings.Split(slc[i], "#")[0]
+		// remove all extra spacing
+		slc[i] = h.replace(slc[i], "  ", " ")
+		slc[i] = strings.TrimSpace(slc[i])
+	}
+
+	// part 2: split multi-host lines
+	var outslc []string
+
+	for i := range slc {
+		newslc := strings.Split(slc[i], " ")
+		outslc = append(outslc, newslc...)
+	}
+	slc = outslc
+
+	// part 3
 	for i := range slc {
 		slc[i] = h.scrub(slc[i], "127.0.0.1")
 		slc[i] = h.scrub(slc[i], "0.0.0.0")
+		slc[i] = h.replace(slc[i], "  ", " ")
 		slc[i] = strings.TrimSpace(slc[i])
 	}
 	// remove empty elements
@@ -27,16 +49,17 @@ func (h Hosts) normalize(slc []string) []string {
 	// remove comments
 	slc = h.filter(slc, h.notcomment)
 
+	h.domains = slc
 	return slc
 }
 
-func (h *Hosts) loadfile(file string) {
+func (h *Hosts) loadfile(file string) int {
 	h.File = file
 	bytes, err := ioutil.ReadFile(file)
 	h.checkerror(err)
 	h.raw = bytes
-	tempdomains := strings.Split(string(bytes), "\n")
-	h.domains = h.normalize(tempdomains)
+	h.process()
+	return len(bytes)
 }
 
 func (h Hosts) length() int {
