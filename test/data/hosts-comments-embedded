@@ -1,0 +1,5 @@
+# this is a host file with four valid domains
+127.0.0.1 some.domain
+# another comment
+127.0.0.1 some.other.domain other.domain # not.to.be.included
+127.0.0.1 third.domain # also.not.to.be.included this.neither
