@@ -10,9 +10,9 @@ import (
 )
 
 type Hosts struct {
-	url   string
-	File  string
-	lines []string
+	url     string
+	File    string
+	domains []string
 }
 
 func (h Hosts) normalize(slc []string) []string {
@@ -33,12 +33,12 @@ func (h *Hosts) loadfile(file string) {
 	h.File = file
 	bytes, err := ioutil.ReadFile(file)
 	h.checkerror(err)
-	templines := strings.Split(string(bytes), "\n")
-	h.lines = h.normalize(templines)
+	tempdomains := strings.Split(string(bytes), "\n")
+	h.domains = h.normalize(tempdomains)
 }
 
 func (h Hosts) length() int {
-	return len(h.lines)
+	return len(h.domains)
 }
 
 func (h Hosts) filter(vs []string, f func(string) bool) []string {
@@ -80,7 +80,7 @@ func main() {
 	hf2 := Hosts{}
 	hf2.loadfile("/Users/Steve/Dropbox/dev/hosts/data/yoyo.org/hosts")
 
-	intersection := intersect.Simple(hf1.lines, hf2.lines)
+	intersection := intersect.Simple(hf1.domains, hf2.domains)
 
 	fmt.Println("intersection:", intersection)
 	fmt.Println("intersection length:", len(intersection))
