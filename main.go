@@ -10,6 +10,7 @@ import (
 )
 
 type Hosts struct {
+	raw     []byte
 	url     string
 	File    string
 	domains []string
@@ -33,6 +34,7 @@ func (h *Hosts) loadfile(file string) {
 	h.File = file
 	bytes, err := ioutil.ReadFile(file)
 	h.checkerror(err)
+	h.raw = bytes
 	tempdomains := strings.Split(string(bytes), "\n")
 	h.domains = h.normalize(tempdomains)
 }
