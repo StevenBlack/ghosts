@@ -9,48 +9,39 @@ import (
 	"github.com/juliangruber/go-intersect"
 )
 
-func main() {
-
-	// for now, hard-coded hosts files in the filesystem
-	h1 := "/Users/Steve/Dropbox/dev/hosts/data/StevenBlack/hosts"
-	h2 := "/Users/Steve/Dropbox/dev/hosts/data/yoyo.org/hosts"
-
-	h1bytes, err := ioutil.ReadFile(h1)
-	checkerror(err)
-
-	host1lines := strings.Split(string(h1bytes), "\n")
-	host1lines = normalize(host1lines)
-	fmt.Println("Hosts1 length:", len(host1lines))
-
-	h2bytes, err := ioutil.ReadFile(h2)
-	checkerror(err)
-
-	host2lines := strings.Split(string(h2bytes), "\n")
-	host2lines = normalize(host2lines)
-	fmt.Println("Hosts2 length:", len(host2lines))
-
-	intersection := intersect.Simple(host1lines, host2lines)
-
-	fmt.Println("intersection:", intersection)
-	fmt.Println("intersection length:", len(intersection))
-
+type Hosts struct {
+	url   string
+	File  string
+	lines []string
 }
 
-func normalize(slc []string) []string {
-	// scrub and trim each element of the slice
+func (h Hosts) normalize(slc []string) []string {
 	for i := range slc {
-		slc[i] = scrub(slc[i], "127.0.0.1")
-		slc[i] = scrub(slc[i], "0.0.0.0")
+		slc[i] = h.scrub(slc[i], "127.0.0.1")
+		slc[i] = h.scrub(slc[i], "0.0.0.0")
 		slc[i] = strings.TrimSpace(slc[i])
 	}
 	// remove empty elements
-	slc = filter(slc, notempty)
+	slc = h.filter(slc, h.notempty)
 	// remove comments
-	slc = filter(slc, notcomment)
+	slc = h.filter(slc, h.notcomment)
+
 	return slc
 }
 
-func filter(vs []string, f func(string) bool) []string {
+func (h *Hosts) loadfile(file string) {
+	h.File = file
+	bytes, err := ioutil.ReadFile(file)
+	h.checkerror(err)
+	templines := strings.Split(string(bytes), "\n")
+	h.lines = h.normalize(templines)
+}
+
+func (h Hosts) length() int {
+	return len(h.lines)
+}
+
+func (h Hosts) filter(vs []string, f func(string) bool) []string {
 	vsf := make([]string, 0)
 	for _, v := range vs {
 		if f(v) {
@@ -60,21 +51,37 @@ func filter(vs []string, f func(string) bool) []string {
 	return vsf
 }
 
-func notempty(s string) bool {
+func (h Hosts) notempty(s string) bool {
 	return len(s) > 0
 }
 
-func notcomment(s string) bool {
+func (h Hosts) notcomment(s string) bool {
 	return !strings.HasPrefix(s, "#")
 }
 
-func scrub(s string, r string) string {
+func (h Hosts) scrub(s string, r string) string {
 	return strings.ReplaceAll(s, r, "")
 }
 
-func checkerror(err error) {
+func (h Hosts) replace(s string, r string, n string) string {
+	return strings.ReplaceAll(s, r, n)
+}
+
+func (h Hosts) checkerror(err error) {
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+}
+
+func main() {
+	hf1 := Hosts{}
+	hf1.loadfile("/Users/Steve/Dropbox/dev/hosts/data/StevenBlack/hosts")
+	hf2 := Hosts{}
+	hf2.loadfile("/Users/Steve/Dropbox/dev/hosts/data/yoyo.org/hosts")
+
+	intersection := intersect.Simple(hf1.lines, hf2.lines)
+
+	fmt.Println("intersection:", intersection)
+	fmt.Println("intersection length:", len(intersection))
 }
