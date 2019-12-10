@@ -5,6 +5,7 @@ import (
 )
 
 func TestMultihostLines(t *testing.T) {
+	// testing for splitting multiple domains per line into individual lines
 	hf := Hosts{}
 	hf.loadfile("./test/data/hosts-multi")
 
@@ -17,6 +18,7 @@ func TestMultihostLines(t *testing.T) {
 }
 
 func TestEmbeddedComments(t *testing.T) {
+	// testing hosts lines with embedded comments
 	hf := Hosts{}
 	hf.loadfile("./test/data/hosts-comments-embedded")
 
@@ -25,6 +27,25 @@ func TestEmbeddedComments(t *testing.T) {
 
 	if got != want {
 		t.Errorf("got %d domains, want %d", got, want)
-
 	}
+}
+
+func TestDuplicates(t *testing.T) {
+	// testing hosts with duplicates
+	hf := Hosts{}
+	hf.loadfile("./test/data/hosts-duplicates")
+
+	got := len(hf.domains)
+	want := 5
+	dupesgot := len(hf.duplicates)
+	dupeswant := 1
+
+	if got != want {
+		t.Errorf("got %d domains, want %d", got, want)
+	}
+
+	if dupesgot != dupeswant {
+		t.Errorf("got %d duplicate domains, want %d", dupesgot, dupeswant)
+	}
+
 }

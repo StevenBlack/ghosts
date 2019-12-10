@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"sort"
 	"strings"
 	"time"
 
@@ -12,10 +13,11 @@ import (
 )
 
 type Hosts struct {
-	raw     []byte
-	url     string
-	File    string
-	domains []string
+	raw        []byte
+	url        string
+	File       string
+	domains    []string
+	duplicates []string
 }
 
 func (h *Hosts) process() []string {
@@ -50,6 +52,21 @@ func (h *Hosts) process() []string {
 	slc = h.filter(slc, h.notempty)
 	// remove comments
 	slc = h.filter(slc, h.notcomment)
+
+	// sort
+	sort.Sort(sort.StringSlice(slc))
+
+	//deduplicate
+	j := 0
+	for i := 1; i < len(slc); i++ {
+		if slc[j] == slc[i] {
+			h.duplicates = append(h.duplicates, slc[j])
+			continue
+		}
+		j++
+		slc[j] = slc[i]
+	}
+	slc = slc[:j+1]
 
 	h.domains = slc
 	return slc
