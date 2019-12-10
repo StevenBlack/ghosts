@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/juliangruber/go-intersect"
 )
@@ -62,6 +64,24 @@ func (h *Hosts) loadfile(file string) int {
 	return len(bytes)
 }
 
+func (h *Hosts) loadurl(url string) int {
+	h.url = url
+	client := http.Client{
+		Timeout: time.Duration(5000 * time.Millisecond),
+	}
+	resp, err := client.Get(url)
+	h.checkerror(err)
+
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	h.checkerror(err)
+
+	h.raw = body
+	h.process()
+	return len(body)
+}
+
 func (h Hosts) length() int {
 	return len(h.domains)
 }
@@ -101,9 +121,9 @@ func (h Hosts) checkerror(err error) {
 
 func main() {
 	hf1 := Hosts{}
-	hf1.loadfile("/Users/Steve/Dropbox/dev/hosts/data/StevenBlack/hosts")
+	hf1.loadurl("https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts")
 	hf2 := Hosts{}
-	hf2.loadfile("/Users/Steve/Dropbox/dev/hosts/data/yoyo.org/hosts")
+	hf2.loadurl("http://winhelp2002.mvps.org/hosts.txt")
 
 	intersection := intersect.Simple(hf1.domains, hf2.domains)
 
