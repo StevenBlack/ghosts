@@ -47,5 +47,17 @@ func TestDuplicates(t *testing.T) {
 	if dupesgot != dupeswant {
 		t.Errorf("got %d duplicate domains, want %d", dupesgot, dupeswant)
 	}
+}
 
+func TestJustText(t *testing.T) {
+	// testing a file with just text, no hosts
+	hf := Hosts{}
+	hf.loadfile("./test/data/hosts-text")
+
+	got := len(hf.domains)
+	want := 0
+
+	if got != want {
+		t.Errorf("got %d domains, want %d", got, want)
+	}
 }
