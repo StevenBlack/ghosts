@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+        "net"
 	"net/http"
 	"os"
 	"sort"
@@ -23,7 +24,7 @@ type Hosts struct {
 func (h *Hosts) process() []string {
 	slc := strings.Split(string(h.raw), "\n")
 
-	// Part 1: basic cleanup
+        // Step: basic cleanup
 	for i := range slc {
 		// remove embedded comments
 		slc[i] = strings.Split(slc[i], "#")[0]
