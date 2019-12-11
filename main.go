@@ -21,6 +21,16 @@ type Hosts struct {
 	duplicates []string
 }
 
+func (h *Hosts) reset() bool {
+	h.raw = []byte{}
+	h.url = ""
+	h.file = ""
+	h.domains = []string{}
+	h.duplicates = []string{}
+
+	return true
+}
+
 func (h *Hosts) process() []string {
 	slc := strings.Split(string(h.raw), "\n")
 
@@ -80,6 +90,7 @@ func (h *Hosts) process() []string {
 }
 
 func (h *Hosts) loadfile(file string) int {
+	h.reset()
 	bytes, err := ioutil.ReadFile(file)
 	h.checkerror(err)
 	h.file = file
@@ -89,6 +100,7 @@ func (h *Hosts) loadfile(file string) int {
 }
 
 func (h *Hosts) loadurl(url string) int {
+	h.reset()
 	client := http.Client{
 		Timeout: time.Duration(5000 * time.Millisecond),
 	}
