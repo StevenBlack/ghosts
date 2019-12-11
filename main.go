@@ -15,16 +15,14 @@ import (
 
 type Hosts struct {
 	raw        []byte
-	url        string
-	file       string
+	location   string
 	domains    []string
 	duplicates []string
 }
 
 func (h *Hosts) reset() bool {
 	h.raw = []byte{}
-	h.url = ""
-	h.file = ""
+	h.location = ""
 	h.domains = []string{}
 	h.duplicates = []string{}
 
@@ -93,7 +91,7 @@ func (h *Hosts) loadfile(file string) int {
 	h.reset()
 	bytes, err := ioutil.ReadFile(file)
 	h.checkerror(err)
-	h.file = file
+	h.location = file
 	h.raw = bytes
 	h.process()
 	return len(bytes)
@@ -112,7 +110,7 @@ func (h *Hosts) loadurl(url string) int {
 	body, err := ioutil.ReadAll(resp.Body)
 	h.checkerror(err)
 
-	h.url = url
+	h.location = url
 	h.raw = body
 	h.process()
 	return len(body)
