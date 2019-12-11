@@ -21,6 +21,7 @@ type Hosts struct {
 }
 
 func (h *Hosts) reset() bool {
+	// zero everything
 	h.raw = []byte{}
 	h.location = ""
 	h.domains = []string{}
@@ -30,6 +31,9 @@ func (h *Hosts) reset() bool {
 }
 
 func (h *Hosts) process() []string {
+	// load the h instance
+
+	// make a slice with the lines from the raw domains
 	slc := strings.Split(string(h.raw), "\n")
 
 	// Step: basic cleanup
@@ -42,6 +46,7 @@ func (h *Hosts) process() []string {
 		slc[i] = strings.Join(words, " ")
 	}
 
+	// discard blank lines
 	slc = h.filter(slc, h.notempty)
 
 	// Step: remove line if it doesn't begin with an IP address
@@ -56,6 +61,7 @@ func (h *Hosts) process() []string {
 	}
 	slc = ipslc
 
+	// we could bail at this juncture
 	if len(slc) == 0 {
 		return slc
 	}
@@ -87,7 +93,17 @@ func (h *Hosts) process() []string {
 	return slc
 }
 
+func (h *Hosts) load(location string) int {
+	// a wrapper to provide a clean loading interface
+	clean := strings.ToLower(location)
+	if strings.HasPrefix(clean, "http") {
+		return h.loadurl(location)
+	}
+	return h.loadfile(location)
+}
+
 func (h *Hosts) loadfile(file string) int {
+	// loading hosts from the file system
 	h.reset()
 	bytes, err := ioutil.ReadFile(file)
 	h.checkerror(err)
@@ -98,6 +114,7 @@ func (h *Hosts) loadfile(file string) int {
 }
 
 func (h *Hosts) loadurl(url string) int {
+	// loading hosts from a url
 	h.reset()
 	client := http.Client{
 		Timeout: time.Duration(5000 * time.Millisecond),
@@ -155,7 +172,7 @@ func (h Hosts) checkerror(err error) {
 
 func main() {
 	hf1 := Hosts{}
-	hf1.loadurl("https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts")
+	hf1.load("https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts")
 	hf2 := Hosts{}
 	hf2.loadurl("http://winhelp2002.mvps.org/hosts.txt")
 
