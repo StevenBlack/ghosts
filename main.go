@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-        "net"
+	"net"
 	"net/http"
 	"os"
 	"sort"
@@ -24,36 +24,41 @@ type Hosts struct {
 func (h *Hosts) process() []string {
 	slc := strings.Split(string(h.raw), "\n")
 
-        // Step: basic cleanup
+	// Step: basic cleanup
 	for i := range slc {
 		// remove embedded comments
 		slc[i] = strings.Split(slc[i], "#")[0]
 
-                // remove all extra whitespace
-                words := strings.Fields(slc[i])
-                slc[i] = strings.Join(words, " ")
+		// remove all extra whitespace
+		words := strings.Fields(slc[i])
+		slc[i] = strings.Join(words, " ")
 	}
 
-	// part 2: split multi-host lines
-	var outslc []string
+	slc = h.filter(slc, h.notempty)
 
+	// Step: remove line if it doesn't begin with an IP address
+	var ipslc []string
+	for i := range slc {
+		words := strings.Fields(slc[i])
+		if net.ParseIP(words[0]) == nil {
+			continue
+		}
+		// removing the ip address
+		ipslc = append(ipslc, strings.Join(words[1:], " "))
+	}
+	slc = ipslc
+
+	if len(slc) == 0 {
+		return slc
+	}
+
+	// Step: split multi-host lines
+	var outslc []string
 	for i := range slc {
 		newslc := strings.Split(slc[i], " ")
 		outslc = append(outslc, newslc...)
 	}
 	slc = outslc
-
-	// part 3
-	for i := range slc {
-		slc[i] = h.scrub(slc[i], "127.0.0.1")
-		slc[i] = h.scrub(slc[i], "0.0.0.0")
-		slc[i] = h.replace(slc[i], "  ", " ")
-		slc[i] = strings.TrimSpace(slc[i])
-	}
-	// remove empty elements
-	slc = h.filter(slc, h.notempty)
-	// remove comments
-	slc = h.filter(slc, h.notcomment)
 
 	// sort
 	sort.Sort(sort.StringSlice(slc))
