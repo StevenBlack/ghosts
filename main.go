@@ -27,9 +27,10 @@ func (h *Hosts) process() []string {
 	for i := range slc {
 		// remove embedded comments
 		slc[i] = strings.Split(slc[i], "#")[0]
-		// remove all extra spacing
-		slc[i] = h.replace(slc[i], "  ", " ")
-		slc[i] = strings.TrimSpace(slc[i])
+
+                // remove all extra whitespace
+                words := strings.Fields(slc[i])
+                slc[i] = strings.Join(words, " ")
 	}
 
 	// part 2: split multi-host lines
