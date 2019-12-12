@@ -14,18 +14,18 @@ import (
 )
 
 type Hosts struct {
-	raw        []byte
-	location   string
-	domains    []string
-	duplicates []string
+	Raw        []byte
+	Location   string
+	Domains    []string
+	Duplicates []string
 }
 
-func (h *Hosts) reset() bool {
+func (h *Hosts) Reset() bool {
 	// zero everything
-	h.raw = []byte{}
-	h.location = ""
-	h.domains = []string{}
-	h.duplicates = []string{}
+	h.Raw = []byte{}
+	h.Location = ""
+	h.Domains = []string{}
+	h.Duplicates = []string{}
 
 	return true
 }
@@ -33,8 +33,8 @@ func (h *Hosts) reset() bool {
 func (h *Hosts) process() []string {
 	// load the h instance
 
-	// make a slice with the lines from the raw domains
-	slc := strings.Split(string(h.raw), "\n")
+	// make a slice with the lines from the Raw domains
+	slc := strings.Split(string(h.Raw), "\n")
 
 	// Step: basic cleanup
 	for i := range slc {
@@ -81,7 +81,7 @@ func (h *Hosts) process() []string {
 	j := 0
 	for i := 1; i < len(slc); i++ {
 		if slc[j] == slc[i] {
-			h.duplicates = append(h.duplicates, slc[j])
+			h.Duplicates = append(h.Duplicates, slc[j])
 			continue
 		}
 		j++
@@ -89,33 +89,33 @@ func (h *Hosts) process() []string {
 	}
 	slc = slc[:j+1]
 
-	h.domains = slc
+	h.Domains = slc
 	return slc
 }
 
-func (h *Hosts) load(location string) int {
+func (h *Hosts) Load(location string) int {
 	// a wrapper to provide a clean loading interface
 	clean := strings.ToLower(location)
 	if strings.HasPrefix(clean, "http") {
-		return h.loadurl(location)
+		return h.Loadurl(location)
 	}
-	return h.loadfile(location)
+	return h.Loadfile(location)
 }
 
-func (h *Hosts) loadfile(file string) int {
+func (h *Hosts) Loadfile(file string) int {
 	// loading hosts from the file system
-	h.reset()
+	h.Reset()
 	bytes, err := ioutil.ReadFile(file)
 	h.checkerror(err)
-	h.location = file
-	h.raw = bytes
+	h.Location = file
+	h.Raw = bytes
 	h.process()
 	return len(bytes)
 }
 
-func (h *Hosts) loadurl(url string) int {
+func (h *Hosts) Loadurl(url string) int {
 	// loading hosts from a url
-	h.reset()
+	h.Reset()
 	client := http.Client{
 		Timeout: time.Duration(5000 * time.Millisecond),
 	}
@@ -127,14 +127,14 @@ func (h *Hosts) loadurl(url string) int {
 	body, err := ioutil.ReadAll(resp.Body)
 	h.checkerror(err)
 
-	h.location = url
-	h.raw = body
+	h.Location = url
+	h.Raw = body
 	h.process()
 	return len(body)
 }
 
 func (h Hosts) length() int {
-	return len(h.domains)
+	return len(h.Domains)
 }
 
 func (h Hosts) filter(vs []string, f func(string) bool) []string {
@@ -172,11 +172,11 @@ func (h Hosts) checkerror(err error) {
 
 func main() {
 	hf1 := Hosts{}
-	hf1.load("https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts")
+	hf1.Load("https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts")
 	hf2 := Hosts{}
-	hf2.loadurl("http://winhelp2002.mvps.org/hosts.txt")
+	hf2.Loadurl("http://winhelp2002.mvps.org/hosts.txt")
 
-	intersection := intersect.Simple(hf1.domains, hf2.domains)
+	intersection := intersect.Simple(hf1.Domains, hf2.Domains)
 
 	fmt.Println("intersection:", intersection)
 	fmt.Println("intersection length:", len(intersection))
