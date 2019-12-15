@@ -31,8 +31,6 @@ func (h *Hosts) Reset() bool {
 }
 
 func (h *Hosts) process() []string {
-	// load the h instance
-
 	// make a slice with the lines from the Raw domains
 	slc := strings.Split(string(h.Raw), "\n")
 
@@ -44,6 +42,9 @@ func (h *Hosts) process() []string {
 		// remove all extra whitespace
 		words := strings.Fields(slc[i])
 		slc[i] = strings.Join(words, " ")
+
+		// lowercase everything
+		slc[i] = strings.ToLower(slc[i])
 	}
 
 	// discard blank lines

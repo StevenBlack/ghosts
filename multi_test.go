@@ -38,7 +38,7 @@ func TestDuplicates(t *testing.T) {
 	got := len(hf.Domains)
 	want := 5
 	dupesgot := len(hf.Duplicates)
-	dupeswant := 1
+	dupeswant := 3
 
 	if got != want {
 		t.Errorf("got %d Domains, want %d", got, want)

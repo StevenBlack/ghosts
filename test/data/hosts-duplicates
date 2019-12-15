@@ -1,7 +1,9 @@
-# this file has 5 unique domains, one duplicate
+# this file has 5 unique domains, three duplicates
 127.0.0.1 a.com
 127.0.0.1 b.com
 127.0.0.1 c.com
-127.0.0.1 a.com
 127.0.0.1 d.com
 127.0.0.1 e.com
+127.0.0.1 a.com
+127.0.0.1 D.com
+127.0.0.1 E.COM
