@@ -171,11 +171,62 @@ func (h Hosts) checkerror(err error) {
 	}
 }
 
+type Domains []string
+
+func (s Domains) Len() int {
+	return len(s)
+}
+func (s Domains) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}
+
+func (s Domains) Less(i, j int) bool {
+	hf := Hosts{}
+	return hf.Norm(s[i]) < hf.Norm(s[j])
+}
+
+func (h *Hosts) Norm(c string) string {
+	pad := " "
+	length := 10
+	cslice := strings.Split(c, ".")
+	parts := len(cslice)
+	out := padr(cslice[parts-2], length, pad)
+	out += padr(cslice[parts-1], length, pad)
+	rslice := reverse(cslice)
+	if parts > 2 {
+		slc := rslice[:2]
+		fmt.Println(slc)
+		for i := range slc {
+			out += padr(slc[i], length, " ")
+		}
+	}
+	return out
+}
+
+func times(str string, n int) string {
+	if n <= 0 {
+		return ""
+	}
+	return strings.Repeat(str, n)
+}
+
+func padr(str string, length int, pad string) string {
+	return str + times(pad, length-len(str))
+}
+
+func reverse(a []string) []string {
+	for i := len(a)/2 - 1; i >= 0; i-- {
+		opp := len(a) - 1 - i
+		a[i], a[opp] = a[opp], a[i]
+	}
+	return a
+}
+
 func main() {
 	hf1 := Hosts{}
-	hf1.Load("https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts")
+	hf1.Load("http://sbc.io/hosts/alternates/fakenews-gambling-porn-social/hosts")
 	hf2 := Hosts{}
-	hf2.Loadurl("http://winhelp2002.mvps.org/hosts.txt")
+	hf2.Load("https://lab.deep.bg/hosts.txt")
 
 	intersection := intersect.Simple(hf1.Domains, hf2.Domains)
 

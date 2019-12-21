@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -86,4 +87,30 @@ func TestUrlJustText(t *testing.T) {
 	if got != want {
 		t.Errorf("got %d domains, want %d", got, want)
 	}
+}
+
+func TestSorting(t *testing.T) {
+	// testing hosts with duplicates
+	hf := Hosts{}
+	a := "aa.ca"
+	b := "zz.aa"
+
+	got := hf.Norm(a) < hf.Norm(b)
+	want := true
+
+	if got != want {
+		t.Errorf("aa.ca < zz.aa")
+	}
+
+	a = "cc.ca"
+	b = "aa.cc.ca"
+
+	fmt.Println(hf.Norm(a), " - ", hf.Norm(b))
+	got = hf.Norm(a) < hf.Norm(b)
+	want = true
+
+	if got != want {
+		t.Errorf("cc.ca < aa.cc.aa")
+	}
+
 }
