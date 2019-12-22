@@ -76,7 +76,8 @@ func (h *Hosts) process() []string {
 	slc = outslc
 
 	// sort
-	sort.Sort(sort.StringSlice(slc))
+	// sort.Sort(sort.StringSlice(slc))
+	sort.Sort(Domains(slc))
 
 	//deduplicate
 	j := 0
@@ -190,14 +191,16 @@ func (h *Hosts) Norm(c string) string {
 	length := 10
 	cslice := strings.Split(c, ".")
 	parts := len(cslice)
-	out := padr(cslice[parts-2], length, pad)
-	out += padr(cslice[parts-1], length, pad)
-	rslice := reverse(cslice)
-	if parts > 2 {
-		slc := rslice[:2]
-		fmt.Println(slc)
-		for i := range slc {
-			out += padr(slc[i], length, " ")
+	out := c
+	if parts > 1 {
+		out = padr(cslice[parts-2], length, pad)
+		out += padr(cslice[parts-1], length, pad)
+		rslice := reverse(cslice)
+		if parts > 2 {
+			slc := rslice[2:]
+			for i := range slc {
+				out += padr(slc[i], length, " ")
+			}
 		}
 	}
 	return out

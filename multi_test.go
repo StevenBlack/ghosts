@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -105,7 +104,6 @@ func TestSorting(t *testing.T) {
 	a = "cc.ca"
 	b = "aa.cc.ca"
 
-	fmt.Println(hf.Norm(a), " - ", hf.Norm(b))
 	got = hf.Norm(a) < hf.Norm(b)
 	want = true
 
