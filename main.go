@@ -234,17 +234,23 @@ func reverse(a []string) []string {
 
 func main() {
 
+        // Expose the command line flags we support
 	var inputhosts, comparehosts string
-	var sort bool
+        var dedup, alphasort bool
 
-	flag.StringVar(&inputhosts, "i", "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts", "The main list of hosts")
-	flag.StringVar(&inputhosts, "input", "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts", "The main list of hosts")
+        // -i, --input: The first hosts file to load, serving as a basis for what happens subsequently.  Default is my ad-hoc list.
+        flag.StringVar(&inputhosts, "i", "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts", "The main list of hosts to analyze, or serve as a basis for comparison")
+        flag.StringVar(&inputhosts, "input", "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts", "The main list of hosts to analyze, or serve as a basis for comparison")
 
+        // -c, --compare: The second hosts file to load in order to compare, or merge, with the first hosts file.
 	flag.StringVar(&comparehosts, "c", "", "Hosts list to compare")
 	flag.StringVar(&comparehosts, "compare", "", "Hosts list to compare")
 
-	flag.BoolVar(&sort, "s", false, "Sort the hosts?")
-	flag.BoolVar(&sort, "sort", false, "Sort the hosts?")
+        flag.BoolVar(&alphasort, "s", false, "Sort the hosts?")
+        flag.BoolVar(&alphasort, "sort", false, "Sort the hosts?")
+
+        flag.BoolVar(&dedup, "d", true, "De duplicate hosts?")
+        flag.BoolVar(&dedup, "dedupe", true, "De duplicate hosts?")
 
 	flag.Parse()
 
