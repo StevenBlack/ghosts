@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"net"
@@ -13,6 +14,7 @@ import (
 	"github.com/juliangruber/go-intersect"
 )
 
+// A Hosts struc holds all the facets of a collection of hosts.
 type Hosts struct {
 	Raw        []byte
 	Location   string
@@ -20,6 +22,7 @@ type Hosts struct {
 	Duplicates []string
 }
 
+// Reset the Hosts struc to an initial, unloaded state.
 func (h *Hosts) Reset() bool {
 	// zero everything
 	h.Raw = []byte{}
@@ -95,6 +98,7 @@ func (h *Hosts) process() []string {
 	return slc
 }
 
+// Load (generically) a list of hosts into the Hosts struc
 func (h *Hosts) Load(location string) int {
 	// a wrapper to provide a clean loading interface
 	clean := strings.ToLower(location)
@@ -104,6 +108,7 @@ func (h *Hosts) Load(location string) int {
 	return h.Loadfile(location)
 }
 
+// Load a file of hosts into the Hosts struc
 func (h *Hosts) Loadfile(file string) int {
 	// loading hosts from the file system
 	h.Reset()
@@ -115,6 +120,7 @@ func (h *Hosts) Loadfile(file string) int {
 	return len(bytes)
 }
 
+// Load hosts into the Hosts struc from a URL
 func (h *Hosts) Loadurl(url string) int {
 	// loading hosts from a url
 	h.Reset()
@@ -226,13 +232,30 @@ func reverse(a []string) []string {
 }
 
 func main() {
+
+	var inputhosts, comparehosts string
+	var sort bool
+
+	flag.StringVar(&inputhosts, "i", "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts", "The main list of hosts")
+	flag.StringVar(&inputhosts, "input", "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts", "The main list of hosts")
+
+	flag.StringVar(&comparehosts, "c", "", "Hosts list to compare")
+	flag.StringVar(&comparehosts, "compare", "", "Hosts list to compare")
+
+	flag.BoolVar(&sort, "s", false, "Sort the hosts?")
+	flag.BoolVar(&sort, "sort", false, "Sort the hosts?")
+
+	flag.Parse()
+
 	hf1 := Hosts{}
-	hf1.Load("http://sbc.io/hosts/alternates/fakenews-gambling-porn-social/hosts")
-	hf2 := Hosts{}
-	hf2.Load("https://lab.deep.bg/hosts.txt")
+	hf1.Load(inputhosts)
 
-	intersection := intersect.Simple(hf1.Domains, hf2.Domains)
+	if len(comparehosts) > 0 {
+		hf2 := Hosts{}
+		hf2.Load(comparehosts)
+		intersection := intersect.Simple(hf1.Domains, hf2.Domains)
 
-	fmt.Println("intersection:", intersection)
-	fmt.Println("intersection length:", len(intersection))
+		fmt.Println("intersection:", intersection)
+		fmt.Println("intersection length:", len(intersection))
+	}
 }
