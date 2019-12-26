@@ -78,11 +78,9 @@ func (h *Hosts) process() []string {
 	}
 	slc = outslc
 
-	// sort
-	// sort.Sort(sort.StringSlice(slc))
-	sort.Sort(Domains(slc))
-
-	//deduplicate
+	// regular string sort for deduplication
+	sort.Sort(sort.StringSlice(slc))
+	// deduplicate
 	j := 0
 	for i := 1; i < len(slc); i++ {
 		if slc[j] == slc[i] {
@@ -94,6 +92,10 @@ func (h *Hosts) process() []string {
 	}
 	slc = slc[:j+1]
 
+	// custom domain sorting
+	sort.Sort(domainSort(slc))
+
+	// Stash our slice of domains.
 	h.Domains = slc
 	return slc
 }
@@ -234,23 +236,23 @@ func reverse(a []string) []string {
 
 func main() {
 
-        // Expose the command line flags we support
+	// Expose the command line flags we support
 	var inputhosts, comparehosts string
-        var dedup, alphasort bool
+	var dedup, alphasort bool
 
-        // -i, --input: The first hosts file to load, serving as a basis for what happens subsequently.  Default is my ad-hoc list.
-        flag.StringVar(&inputhosts, "i", "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts", "The main list of hosts to analyze, or serve as a basis for comparison")
-        flag.StringVar(&inputhosts, "input", "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts", "The main list of hosts to analyze, or serve as a basis for comparison")
+	// -i, --input: The first hosts file to load, serving as a basis for what happens subsequently.  Default is my ad-hoc list.
+	flag.StringVar(&inputhosts, "i", "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts", "The main list of hosts to analyze, or serve as a basis for comparison")
+	flag.StringVar(&inputhosts, "input", "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts", "The main list of hosts to analyze, or serve as a basis for comparison")
 
-        // -c, --compare: The second hosts file to load in order to compare, or merge, with the first hosts file.
+	// -c, --compare: The second hosts file to load in order to compare, or merge, with the first hosts file.
 	flag.StringVar(&comparehosts, "c", "", "Hosts list to compare")
 	flag.StringVar(&comparehosts, "compare", "", "Hosts list to compare")
 
-        flag.BoolVar(&alphasort, "s", false, "Sort the hosts?")
-        flag.BoolVar(&alphasort, "sort", false, "Sort the hosts?")
+	flag.BoolVar(&alphasort, "s", false, "Sort the hosts?")
+	flag.BoolVar(&alphasort, "sort", false, "Sort the hosts?")
 
-        flag.BoolVar(&dedup, "d", true, "De duplicate hosts?")
-        flag.BoolVar(&dedup, "dedupe", true, "De duplicate hosts?")
+	flag.BoolVar(&dedup, "d", true, "De duplicate hosts?")
+	flag.BoolVar(&dedup, "dedupe", true, "De duplicate hosts?")
 
 	flag.Parse()
 
