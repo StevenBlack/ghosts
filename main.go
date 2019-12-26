@@ -178,16 +178,17 @@ func (h Hosts) checkerror(err error) {
 	}
 }
 
-type Domains []string
+// Structure and functions for custom domain sorting.
+type domainSort []string
 
-func (s Domains) Len() int {
+func (s domainSort) Len() int {
 	return len(s)
 }
-func (s Domains) Swap(i, j int) {
+func (s domainSort) Swap(i, j int) {
 	s[i], s[j] = s[j], s[i]
 }
 
-func (s Domains) Less(i, j int) bool {
+func (s domainSort) Less(i, j int) bool {
 	hf := Hosts{}
 	return hf.Norm(s[i]) < hf.Norm(s[j])
 }
