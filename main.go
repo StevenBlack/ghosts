@@ -86,17 +86,17 @@ func (h *Hosts) process() []string {
 	sort.Sort(sort.StringSlice(slc))
 
 	// deduplicate
-        if dedup {
-                j := 0
-                for i := 1; i < len(slc); i++ {
-                        if slc[j] == slc[i] {
-                                h.Duplicates = append(h.Duplicates, slc[j])
-                                continue
-                        }
-                        j++
-                        slc[j] = slc[i]
+	if dedup {
+		j := 0
+		for i := 1; i < len(slc); i++ {
+			if slc[j] == slc[i] {
+				h.Duplicates = append(h.Duplicates, slc[j])
+				continue
+			}
+			j++
+			slc[j] = slc[i]
 		}
-                slc = slc[:j+1]
+		slc = slc[:j+1]
 	}
 	// custom domain sorting
 	sort.Sort(domainSort(slc))
@@ -251,11 +251,21 @@ func main() {
 	flag.StringVar(&comparehosts, "c", "", "Hosts list to compare")
 	flag.StringVar(&comparehosts, "compare", "", "Hosts list to compare")
 
-	flag.BoolVar(&alphasort, "s", false, "Sort the hosts?")
-	flag.BoolVar(&alphasort, "sort", false, "Sort the hosts?")
-
 	flag.BoolVar(&dedup, "d", true, "De duplicate hosts?")
 	flag.BoolVar(&dedup, "dedupe", true, "De duplicate hosts?")
+
+	// these flags are not yet implemented
+
+	flag.BoolVar(&output, "o", true, "Return the list of hosts?")
+	flag.BoolVar(&output, "output", true, "Return the list of hosts")
+
+	flag.BoolVar(&plain, "p", false, "Return a plain list of hosts?")
+	flag.BoolVar(&plain, "plain", false, "Return a plain list of hosts")
+
+	flag.StringVar(&ipLocalhost, "ip", "0.0.0.0", "Localhost IP address")
+	flag.StringVar(&ipLocalhost, "ipaddress", "0.0.0.0", "Localhost IP address")
+	flag.BoolVar(&alphasort, "s", false, "Sort the hosts?")
+	flag.BoolVar(&alphasort, "sort", false, "Sort the hosts?")
 
 	flag.Parse()
 
