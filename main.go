@@ -192,12 +192,13 @@ func (s domainSort) Swap(i, j int) {
 
 func (s domainSort) Less(i, j int) bool {
 	hf := Hosts{}
-	return hf.Norm(s[i]) < hf.Norm(s[j])
+	return hf.Normalize(s[i]) < hf.Normalize(s[j])
 }
 
-func (h *Hosts) Norm(c string) string {
+// Normalize the host string for sorting
+func (h *Hosts) Normalize(c string) string {
 	pad := " "
-	length := 10
+	length := 50
 	cslice := strings.Split(c, ".")
 	parts := len(cslice)
 	out := c

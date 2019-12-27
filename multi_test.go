@@ -94,7 +94,7 @@ func TestSorting(t *testing.T) {
 	a := "aa.ca"
 	b := "zz.aa"
 
-	got := hf.Norm(a) < hf.Norm(b)
+	got := hf.Normalize(a) < hf.Normalize(b)
 	want := true
 
 	if got != want {
@@ -104,7 +104,7 @@ func TestSorting(t *testing.T) {
 	a = "cc.ca"
 	b = "aa.cc.ca"
 
-	got = hf.Norm(a) < hf.Norm(b)
+	got = hf.Normalize(a) < hf.Normalize(b)
 	want = true
 
 	if got != want {
