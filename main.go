@@ -84,18 +84,20 @@ func (h *Hosts) process() []string {
 
 	// regular string sort for deduplication
 	sort.Sort(sort.StringSlice(slc))
-	// deduplicate
-	j := 0
-	for i := 1; i < len(slc); i++ {
-		if slc[j] == slc[i] {
-			h.Duplicates = append(h.Duplicates, slc[j])
-			continue
-		}
-		j++
-		slc[j] = slc[i]
-	}
-	slc = slc[:j+1]
 
+	// deduplicate
+        if dedup {
+                j := 0
+                for i := 1; i < len(slc); i++ {
+                        if slc[j] == slc[i] {
+                                h.Duplicates = append(h.Duplicates, slc[j])
+                                continue
+                        }
+                        j++
+                        slc[j] = slc[i]
+		}
+                slc = slc[:j+1]
+	}
 	// custom domain sorting
 	sort.Sort(domainSort(slc))
 
