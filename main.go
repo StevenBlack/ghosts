@@ -14,6 +14,10 @@ import (
 	"github.com/juliangruber/go-intersect"
 )
 
+// Expose the command line flags we support
+var inputhosts, comparehosts, ipLocalhost string
+var dedup, alphasort, output, plain bool
+
 // A Hosts struc holds all the facets of a collection of hosts.
 type Hosts struct {
 	Raw        []byte
@@ -236,10 +240,6 @@ func reverse(a []string) []string {
 }
 
 func main() {
-
-	// Expose the command line flags we support
-	var inputhosts, comparehosts string
-	var dedup, alphasort bool
 
 	// -i, --input: The first hosts file to load, serving as a basis for what happens subsequently.  Default is my ad-hoc list.
 	flag.StringVar(&inputhosts, "i", "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts", "The main list of hosts to analyze, or serve as a basis for comparison")
