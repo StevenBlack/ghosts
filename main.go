@@ -16,7 +16,7 @@ import (
 
 // Expose the command line flags we support
 var inputhosts, comparehosts, ipLocalhost string
-var dedup, alphasort, output, plain bool
+var alphasort, output, plain bool
 
 // A Hosts struc holds all the facets of a collection of hosts.
 type Hosts struct {
@@ -86,23 +86,33 @@ func (h *Hosts) process() []string {
 	sort.Sort(sort.StringSlice(slc))
 
 	// deduplicate
-	if dedup {
-		j := 0
-		for i := 1; i < len(slc); i++ {
-			if slc[j] == slc[i] {
-				h.Duplicates = append(h.Duplicates, slc[j])
-				continue
-			}
-			j++
-			slc[j] = slc[i]
+	j := 0
+	for i := 1; i < len(slc); i++ {
+		if slc[j] == slc[i] {
+			h.Duplicates = append(h.Duplicates, slc[j])
+			continue
 		}
-		slc = slc[:j+1]
+		j++
+		slc[j] = slc[i]
 	}
+	slc = slc[:j+1]
+
 	// custom domain sorting
 	sort.Sort(domainSort(slc))
 
 	// Stash our slice of domains.
 	h.Domains = slc
+
+	if output {
+		prefix := ipLocalhost
+		if plain {
+			prefix = ""
+		}
+		for i := range slc {
+			fmt.Println(prefix, slc[i])
+		}
+	}
+
 	return slc
 }
 
@@ -241,8 +251,7 @@ func reverse(a []string) []string {
 	return a
 }
 
-func main() {
-
+func FlagSet() {
 	// -i, --input: The first hosts file to load, serving as a basis for what happens subsequently.  Default is my ad-hoc list.
 	flag.StringVar(&inputhosts, "i", "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts", "The main list of hosts to analyze, or serve as a basis for comparison")
 	flag.StringVar(&inputhosts, "input", "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts", "The main list of hosts to analyze, or serve as a basis for comparison")
@@ -251,16 +260,13 @@ func main() {
 	flag.StringVar(&comparehosts, "c", "", "Hosts list to compare")
 	flag.StringVar(&comparehosts, "compare", "", "Hosts list to compare")
 
-	flag.BoolVar(&dedup, "d", true, "De duplicate hosts?")
-	flag.BoolVar(&dedup, "dedupe", true, "De duplicate hosts?")
-
-	// these flags are not yet implemented
-
 	flag.BoolVar(&output, "o", true, "Return the list of hosts?")
 	flag.BoolVar(&output, "output", true, "Return the list of hosts")
 
 	flag.BoolVar(&plain, "p", false, "Return a plain list of hosts?")
 	flag.BoolVar(&plain, "plain", false, "Return a plain list of hosts")
+
+	// these flags are not yet implemented
 
 	flag.StringVar(&ipLocalhost, "ip", "0.0.0.0", "Localhost IP address")
 	flag.StringVar(&ipLocalhost, "ipaddress", "0.0.0.0", "Localhost IP address")
@@ -268,6 +274,12 @@ func main() {
 	flag.BoolVar(&alphasort, "sort", false, "Sort the hosts?")
 
 	flag.Parse()
+
+}
+
+func main() {
+
+	FlagSet()
 
 	hf1 := Hosts{}
 	hf1.Load(inputhosts)
