@@ -105,11 +105,12 @@ func (h *Hosts) process() []string {
 
 	if output {
 		prefix := ipLocalhost
-		if plain {
-			prefix = ""
-		}
 		for i := range slc {
-			fmt.Println(prefix, slc[i])
+			if plain {
+				fmt.Println(slc[i])
+			} else {
+				fmt.Println(prefix, slc[i])
+			}
 		}
 	}
 
