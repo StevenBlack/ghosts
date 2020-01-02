@@ -15,8 +15,8 @@ import (
 )
 
 // Expose the command line flags we support
-var inputhosts, comparehosts, ipLocalhost string
-var alphasort, output, plain bool
+var inputHosts, compareHosts, ipLocalhost string
+var alphaSort, output, plainOutput bool
 
 // A Hosts struc holds all the facets of a collection of hosts.
 type Hosts struct {
@@ -26,7 +26,7 @@ type Hosts struct {
 	Duplicates []string
 }
 
-// Reset the Hosts struc to an initial, unloaded state.
+// Reset the Hosts structure to an initial, unloaded state.
 func (h *Hosts) Reset() bool {
 	// zero everything
 	h.Raw = []byte{}
@@ -106,7 +106,7 @@ func (h *Hosts) process() []string {
 	if output {
 		prefix := ipLocalhost
 		for i := range slc {
-			if plain {
+			if plainOutput {
 				fmt.Println(slc[i])
 			} else {
 				fmt.Println(prefix, slc[i])
@@ -254,25 +254,25 @@ func reverse(a []string) []string {
 
 func FlagSet() {
 	// -i, --input: The first hosts file to load, serving as a basis for what happens subsequently.  Default is my ad-hoc list.
-	flag.StringVar(&inputhosts, "i", "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts", "The main list of hosts to analyze, or serve as a basis for comparison")
-	flag.StringVar(&inputhosts, "input", "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts", "The main list of hosts to analyze, or serve as a basis for comparison")
+	flag.StringVar(&inputHosts, "i", "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts", "The main list of hosts to analyze, or serve as a basis for comparison")
+	flag.StringVar(&inputHosts, "input", "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts", "The main list of hosts to analyze, or serve as a basis for comparison")
 
 	// -c, --compare: The second hosts file to load in order to compare, or merge, with the first hosts file.
-	flag.StringVar(&comparehosts, "c", "", "Hosts list to compare")
-	flag.StringVar(&comparehosts, "compare", "", "Hosts list to compare")
+	flag.StringVar(&compareHosts, "c", "", "Hosts list to compare")
+	flag.StringVar(&compareHosts, "compare", "", "Hosts list to compare")
 
 	flag.BoolVar(&output, "o", true, "Return the list of hosts?")
 	flag.BoolVar(&output, "output", true, "Return the list of hosts")
 
-	flag.BoolVar(&plain, "p", false, "Return a plain list of hosts?")
-	flag.BoolVar(&plain, "plain", false, "Return a plain list of hosts")
+	flag.BoolVar(&plainOutput, "p", false, "Return a plain output list of hosts?")
+	flag.BoolVar(&plainOutput, "plainOutput", false, "Return a plain output list of hosts")
 
 	// these flags are not yet implemented
 
 	flag.StringVar(&ipLocalhost, "ip", "0.0.0.0", "Localhost IP address")
 	flag.StringVar(&ipLocalhost, "ipaddress", "0.0.0.0", "Localhost IP address")
-	flag.BoolVar(&alphasort, "s", false, "Sort the hosts?")
-	flag.BoolVar(&alphasort, "sort", false, "Sort the hosts?")
+	flag.BoolVar(&alphaSort, "s", false, "Sort the hosts?")
+	flag.BoolVar(&alphaSort, "sort", false, "Sort the hosts?")
 
 	flag.Parse()
 
@@ -283,11 +283,11 @@ func main() {
 	FlagSet()
 
 	hf1 := Hosts{}
-	hf1.Load(inputhosts)
+	hf1.Load(inputHosts)
 
-	if len(comparehosts) > 0 {
+	if len(compareHosts) > 0 {
 		hf2 := Hosts{}
-		hf2.Load(comparehosts)
+		hf2.Load(compareHosts)
 		intersection := intersect.Simple(hf1.Domains, hf2.Domains)
 
 		fmt.Println("intersection:", intersection)
