@@ -261,8 +261,8 @@ func FlagSet() {
 	flag.StringVar(&compareHosts, "c", "", "Hosts list to compare")
 	flag.StringVar(&compareHosts, "compare", "", "Hosts list to compare")
 
-	flag.BoolVar(&output, "o", true, "Return the list of hosts?")
-	flag.BoolVar(&output, "output", true, "Return the list of hosts")
+        flag.BoolVar(&output, "o", false, "Return the list of hosts?")
+        flag.BoolVar(&output, "output", false, "Return the list of hosts")
 
 	flag.BoolVar(&plainOutput, "p", false, "Return a plain output list of hosts?")
 	flag.BoolVar(&plainOutput, "plainOutput", false, "Return a plain output list of hosts")
@@ -292,5 +292,8 @@ func main() {
 
 		fmt.Println("intersection:", intersection)
 		fmt.Println("intersection length:", len(intersection))
+                if output {
+                        fmt.Println("intersection:", intersection)
+                }
 	}
 }
