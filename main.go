@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 
@@ -35,6 +36,22 @@ func (h *Hosts) Reset() bool {
 	h.Duplicates = []string{}
 
 	return true
+}
+
+// summarize the hosts
+func (h *Hosts) Summary(prefix string) string {
+	var summary = []string{}
+	sepLen := 80
+
+	summary = append(summary, strings.Repeat("-", sepLen))
+	summary = append(summary, prefix+" summary:")
+	summary = append(summary, strings.Repeat("-", sepLen))
+	summary = append(summary, "Location: "+h.Location)
+	summary = append(summary, "Domains: "+strconv.Itoa(len(h.Domains)))
+	summary = append(summary, "Bytes: "+strconv.Itoa(len(h.Raw)))
+	summary = append(summary, strings.Repeat("-", sepLen))
+
+	return strings.Join(summary[:], "\n")
 }
 
 func (h *Hosts) process() []string {
@@ -289,14 +306,14 @@ func main() {
 	hf1.Load(inputHosts)
 
 	if stats {
-		fmt.Println("First file:", len(hf1.Domains), "domains")
+		fmt.Println(hf1.Summary("Base hosts file"))
 	}
 
 	if len(compareHosts) > 0 {
 		hf2 := Hosts{}
 		hf2.Load(compareHosts)
 		if stats {
-			fmt.Println("Second file:", len(hf2.Domains), "domains")
+			fmt.Println(hf2.Summary("Compared hosts file"))
 		}
 
 		intersection := intersect.Simple(hf1.Domains, hf2.Domains)
