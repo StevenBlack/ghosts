@@ -16,7 +16,7 @@ import (
 
 // Expose the command line flags we support
 var inputHosts, compareHosts, ipLocalhost string
-var alphaSort, output, plainOutput bool
+var alphaSort, output, plainOutput, stats bool
 
 // A Hosts struc holds all the facets of a collection of hosts.
 type Hosts struct {
@@ -261,8 +261,8 @@ func FlagSet() {
 	flag.StringVar(&compareHosts, "c", "", "Hosts list to compare")
 	flag.StringVar(&compareHosts, "compare", "", "Hosts list to compare")
 
-        flag.BoolVar(&output, "o", false, "Return the list of hosts?")
-        flag.BoolVar(&output, "output", false, "Return the list of hosts")
+	flag.BoolVar(&output, "o", false, "Return the list of hosts?")
+	flag.BoolVar(&output, "output", false, "Return the list of hosts")
 
 	flag.BoolVar(&plainOutput, "p", false, "Return a plain output list of hosts?")
 	flag.BoolVar(&plainOutput, "plainOutput", false, "Return a plain output list of hosts")
@@ -271,8 +271,11 @@ func FlagSet() {
 
 	flag.StringVar(&ipLocalhost, "ip", "0.0.0.0", "Localhost IP address")
 	flag.StringVar(&ipLocalhost, "ipaddress", "0.0.0.0", "Localhost IP address")
+
 	flag.BoolVar(&alphaSort, "s", false, "Sort the hosts?")
 	flag.BoolVar(&alphaSort, "sort", false, "Sort the hosts?")
+
+	flag.BoolVar(&stats, "stats", true, "display stats?")
 
 	flag.Parse()
 
@@ -285,15 +288,22 @@ func main() {
 	hf1 := Hosts{}
 	hf1.Load(inputHosts)
 
+	if stats {
+		fmt.Println("First file:", len(hf1.Domains), "domains")
+	}
+
 	if len(compareHosts) > 0 {
 		hf2 := Hosts{}
 		hf2.Load(compareHosts)
+		if stats {
+			fmt.Println("Second file:", len(hf2.Domains), "domains")
+		}
+
 		intersection := intersect.Simple(hf1.Domains, hf2.Domains)
 
-		fmt.Println("intersection:", intersection)
-		fmt.Println("intersection length:", len(intersection))
-                if output {
-                        fmt.Println("intersection:", intersection)
-                }
+		if output {
+			fmt.Println("intersection:", intersection)
+		}
+		fmt.Println("Intersection:", len(intersection), "domains")
 	}
 }
