@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-        "github.com/dustin/go-humanize"
+	"github.com/dustin/go-humanize"
 	"io/ioutil"
 	"net"
 	"net/http"
@@ -19,7 +19,7 @@ import (
 var inputHosts, compareHosts, ipLocalhost string
 var alphaSort, output, plainOutput, stats bool
 
-// A Hosts struc holds all the facets of a collection of hosts.
+// A Hosts struct holds all the facets of a collection of hosts.
 type Hosts struct {
 	Raw        []byte
 	Location   string
@@ -40,15 +40,15 @@ func (h *Hosts) Reset() bool {
 
 // summarize the hosts
 func (h *Hosts) Summary(prefix string) string {
-	var summary = []string{}
+	var summary []string
 	sepLen := 80
 
 	summary = append(summary, strings.Repeat("-", sepLen))
 	summary = append(summary, prefix+" summary:")
 	summary = append(summary, strings.Repeat("-", sepLen))
 	summary = append(summary, "Location: "+h.Location)
-        summary = append(summary, "Domains: "+humanize.Comma(int64(len(h.Domains))))
-        summary = append(summary, "Bytes: "+humanize.Bytes(uint64(int64(len(h.Raw)))))
+	summary = append(summary, "Domains: "+humanize.Comma(int64(len(h.Domains))))
+	summary = append(summary, "Bytes: "+humanize.Bytes(uint64(int64(len(h.Raw)))))
 	summary = append(summary, strings.Repeat("-", sepLen))
 
 	return strings.Join(summary[:], "\n")
@@ -72,19 +72,19 @@ func (h *Hosts) process() []string {
 	}
 
 	// discard blank lines
-	slc = h.filter(slc, h.notempty)
+	slc = h.filter(slc, h.notEmpty)
 
 	// Step: remove line if it doesn't begin with an IP address
-	var ipslc []string
+	var ipSlice []string
 	for i := range slc {
 		words := strings.Fields(slc[i])
 		if net.ParseIP(words[0]) == nil {
 			continue
 		}
 		// removing the ip address
-		ipslc = append(ipslc, strings.Join(words[1:], " "))
+		ipSlice = append(ipSlice, strings.Join(words[1:], " "))
 	}
-	slc = ipslc
+	slc = ipSlice
 
 	// we could bail at this juncture
 	if len(slc) == 0 {
@@ -92,12 +92,12 @@ func (h *Hosts) process() []string {
 	}
 
 	// Step: split multi-host lines
-	var outslc []string
+	var outSlice []string
 	for i := range slc {
-		newslc := strings.Split(slc[i], " ")
-		outslc = append(outslc, newslc...)
+		newSlice := strings.Split(slc[i], " ")
+		outSlice = append(outSlice, newSlice...)
 	}
-	slc = outslc
+	slc = outSlice
 
 	// regular string sort for deduplication
 	sort.Sort(sort.StringSlice(slc))
@@ -139,7 +139,7 @@ func (h *Hosts) Load(location string) int {
 	// a wrapper to provide a clean loading interface
 	clean := strings.ToLower(location)
 	if strings.HasPrefix(clean, "http") {
-		return h.Loadurl(location)
+		return h.loadURL(location)
 	}
 	return h.Loadfile(location)
 }
@@ -149,7 +149,7 @@ func (h *Hosts) Loadfile(file string) int {
 	// loading hosts from the file system
 	h.Reset()
 	bytes, err := ioutil.ReadFile(file)
-	h.checkerror(err)
+	h.checkError(err)
 	h.Location = file
 	h.Raw = bytes
 	h.process()
@@ -157,19 +157,19 @@ func (h *Hosts) Loadfile(file string) int {
 }
 
 // Load hosts into the Hosts struc from a URL
-func (h *Hosts) Loadurl(url string) int {
+func (h *Hosts) loadURL(url string) int {
 	// loading hosts from a url
 	h.Reset()
 	client := http.Client{
 		Timeout: time.Duration(5000 * time.Millisecond),
 	}
 	resp, err := client.Get(url)
-	h.checkerror(err)
+	h.checkError(err)
 
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
-	h.checkerror(err)
+	h.checkError(err)
 
 	h.Location = url
 	h.Raw = body
@@ -191,11 +191,11 @@ func (h Hosts) filter(vs []string, f func(string) bool) []string {
 	return vsf
 }
 
-func (h Hosts) notempty(s string) bool {
+func (h Hosts) notEmpty(s string) bool {
 	return len(s) > 0
 }
 
-func (h Hosts) notcomment(s string) bool {
+func (h Hosts) notComment(s string) bool {
 	return !strings.HasPrefix(s, "#")
 }
 
@@ -207,7 +207,7 @@ func (h Hosts) replace(s string, r string, n string) string {
 	return strings.ReplaceAll(s, r, n)
 }
 
-func (h Hosts) checkerror(err error) {
+func (h Hosts) checkError(err error) {
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -237,13 +237,13 @@ func (h *Hosts) Normalize(c string) string {
 	parts := len(cslice)
 	out := c
 	if parts > 1 {
-		out = padr(cslice[parts-2], length, pad)
-		out += padr(cslice[parts-1], length, pad)
-		rslice := reverse(cslice)
+		out = padRight(cslice[parts-2], length, pad)
+		out += padRight(cslice[parts-1], length, pad)
+		reverseSlice := reverse(cslice)
 		if parts > 2 {
-			slc := rslice[2:]
+			slc := reverseSlice[2:]
 			for i := range slc {
-				out += padr(slc[i], length, " ")
+				out += padRight(slc[i], length, " ")
 			}
 		}
 	}
@@ -257,7 +257,7 @@ func times(str string, n int) string {
 	return strings.Repeat(str, n)
 }
 
-func padr(str string, length int, pad string) string {
+func padRight(str string, length int, pad string) string {
 	return str + times(pad, length-len(str))
 }
 
@@ -322,6 +322,6 @@ func main() {
 		if output {
 			fmt.Println("intersection:", intersection)
 		}
-		fmt.Println("Intersection:", len(intersection), "domains")
+		fmt.Println("Intersection:", humanize.Comma(int64(len(intersection))), "domains")
 	}
 }
