@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/dustin/go-humanize"
 	"io/ioutil"
 	"net"
 	"net/http"
@@ -11,6 +10,8 @@ import (
 	"sort"
 	"strings"
 	"time"
+
+	"github.com/dustin/go-humanize"
 
 	"github.com/juliangruber/go-intersect"
 )
@@ -115,7 +116,9 @@ func (h *Hosts) process() []string {
 	slc = slc[:j+1]
 
 	// custom domain sorting
-	sort.Sort(domainSort(slc))
+	if alphaSort {
+		sort.Sort(domainSort(slc))
+	}
 
 	// Stash our slice of domains.
 	h.Domains = slc
@@ -296,7 +299,6 @@ func FlagSet() {
 	flag.BoolVar(&stats, "stats", true, "display stats?")
 
 	flag.Parse()
-
 }
 
 func main() {
@@ -306,14 +308,14 @@ func main() {
 	hf1 := Hosts{}
 	hf1.Load(inputHosts)
 
-	if stats {
+	if stats && !output {
 		fmt.Println(hf1.Summary("Base hosts file"))
 	}
 
 	if len(compareHosts) > 0 {
 		hf2 := Hosts{}
 		hf2.Load(compareHosts)
-		if stats {
+		if stats && !output {
 			fmt.Println(hf2.Summary("Compared hosts file"))
 		}
 
