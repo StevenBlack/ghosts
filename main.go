@@ -270,9 +270,10 @@ func reverse(a []string) []string {
 }
 
 func FlagSet() {
-	// -i, --input: The first hosts file to load, serving as a basis for what happens subsequently.  Default is my ad-hoc list.
-	flag.StringVar(&inputHosts, "i", "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts", "The main list of hosts to analyze, or serve as a basis for comparison")
-	flag.StringVar(&inputHosts, "input", "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts", "The main list of hosts to analyze, or serve as a basis for comparison")
+	defaultSource := "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
+	// -i, --input: The first hosts file to load, serving as a basis for what happens subsequently.  Default is StevenBlack hosts.
+	flag.StringVar(&inputHosts, "i", defaultSource, "The main list of hosts to analyze, or serve as a basis for comparison")
+	flag.StringVar(&inputHosts, "input", defaultSource, "The main list of hosts to analyze, or serve as a basis for comparison")
 
 	// -c, --compare: The second hosts file to load in order to compare, or merge, with the first hosts file.
 	flag.StringVar(&compareHosts, "c", "", "Hosts list to compare")
