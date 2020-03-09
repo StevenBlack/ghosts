@@ -3,12 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
+        "github.com/dustin/go-humanize"
 	"io/ioutil"
 	"net"
 	"net/http"
 	"os"
 	"sort"
-	"strconv"
 	"strings"
 	"time"
 
@@ -47,8 +47,8 @@ func (h *Hosts) Summary(prefix string) string {
 	summary = append(summary, prefix+" summary:")
 	summary = append(summary, strings.Repeat("-", sepLen))
 	summary = append(summary, "Location: "+h.Location)
-	summary = append(summary, "Domains: "+strconv.Itoa(len(h.Domains)))
-	summary = append(summary, "Bytes: "+strconv.Itoa(len(h.Raw)))
+        summary = append(summary, "Domains: "+humanize.Comma(int64(len(h.Domains))))
+        summary = append(summary, "Bytes: "+humanize.Bytes(uint64(int64(len(h.Raw)))))
 	summary = append(summary, strings.Repeat("-", sepLen))
 
 	return strings.Join(summary[:], "\n")
