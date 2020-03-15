@@ -18,7 +18,7 @@ import (
 
 // Expose the command line flags we support
 var inputHosts, compareHosts, ipLocalhost string
-var alphaSort, output, plainOutput, stats bool
+var alphaSort, output, plainOutput, stats, intersectionList bool
 
 // A Hosts struct holds all the facets of a collection of hosts.
 type Hosts struct {
@@ -285,6 +285,8 @@ func FlagSet() {
 	flag.BoolVar(&output, "o", false, "Return the list of hosts?")
 	flag.BoolVar(&output, "output", false, "Return the list of hosts")
 
+	flag.BoolVar(&intersectionList, "intersection", false, "Return the list of intersection hosts")
+
 	flag.BoolVar(&plainOutput, "p", false, "Return a plain output list of hosts?")
 	flag.BoolVar(&plainOutput, "plainOutput", false, "Return a plain output list of hosts")
 
@@ -321,7 +323,7 @@ func main() {
 
 		intersection := intersect.Simple(hf1.Domains, hf2.Domains)
 
-		if output {
+		if intersectionList {
 			fmt.Println("intersection:", intersection)
 		}
 		fmt.Println("Intersection:", humanize.Comma(int64(len(intersection))), "domains")
