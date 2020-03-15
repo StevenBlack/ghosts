@@ -19,12 +19,18 @@ import (
 var inputHosts, compareHosts, ipLocalhost string
 var alphaSort, output, plainOutput, stats, intersectionList, tld bool
 
+type TLDtally struct {
+	tld   string
+	tally int
+}
+
 // A Hosts struct holds all the facets of a collection of hosts.
 type Hosts struct {
 	Raw        []byte
 	Location   string
 	Domains    []string
 	TLDs       map[string]int
+	TLDtallies []TLDtally
 	Duplicates []string
 }
 
@@ -35,6 +41,7 @@ func (h *Hosts) Reset() bool {
 	h.Location = ""
 	h.Domains = []string{}
 	h.TLDs = map[string]int{}
+	h.TLDtallies = []TLDtally{}
 	h.Duplicates = []string{}
 
 	return true
@@ -116,18 +123,37 @@ func (h *Hosts) process() []string {
 	}
 	slc = slc[:j+1]
 
-	// tally TLDs, if required
+	// tally TLDs
 	h.TLDs = make(map[string]int)
+	h.TLDtallies = []TLDtally{}
+	m := map[string]int{}
+	n := map[int][]string{}
 	for i := range slc {
 		ss := strings.Split(slc[i], ".")
 		if len(ss) > 1 {
 			s := ss[len(ss)-1]
-			_, ok := h.TLDs[s]
+			_, ok := m[s]
 			if ok {
-				h.TLDs[s] = h.TLDs[s] + 1
+				m[s] = m[s] + 1
 			} else {
-				h.TLDs[s] = 1
+				m[s] = 1
 			}
+		}
+	}
+	var a []int
+	for k, v := range m {
+		n[v] = append(n[v], k)
+	}
+	for k := range n {
+		a = append(a, k)
+	}
+
+	sort.Sort(sort.Reverse(sort.IntSlice(a)))
+
+	for _, k := range a {
+		for _, s := range n[k] {
+			h.TLDs[s] = k
+			h.TLDtallies = append(h.TLDtallies, TLDtally{s, k})
 		}
 	}
 
@@ -149,7 +175,6 @@ func (h *Hosts) process() []string {
 			}
 		}
 	}
-
 	return slc
 }
 
