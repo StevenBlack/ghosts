@@ -117,7 +117,6 @@ func (h *Hosts) process() []string {
 	slc = slc[:j+1]
 
 	// tally TLDs, if required
-	// if tld {
 	h.TLDs = make(map[string]int)
 	for i := range slc {
 		ss := strings.Split(slc[i], ".")
@@ -131,7 +130,6 @@ func (h *Hosts) process() []string {
 			}
 		}
 	}
-	// }
 
 	// custom domain sorting
 	if alphaSort {
