@@ -12,19 +12,19 @@ import (
 	"time"
 
 	"github.com/dustin/go-humanize"
-
 	"github.com/juliangruber/go-intersect"
 )
 
 // Expose the command line flags we support
 var inputHosts, compareHosts, ipLocalhost string
-var alphaSort, output, plainOutput, stats, intersectionList bool
+var alphaSort, output, plainOutput, stats, intersectionList, tld bool
 
 // A Hosts struct holds all the facets of a collection of hosts.
 type Hosts struct {
 	Raw        []byte
 	Location   string
 	Domains    []string
+	TLDs       map[string]int
 	Duplicates []string
 }
 
@@ -34,6 +34,7 @@ func (h *Hosts) Reset() bool {
 	h.Raw = []byte{}
 	h.Location = ""
 	h.Domains = []string{}
+	h.TLDs = map[string]int{}
 	h.Duplicates = []string{}
 
 	return true
@@ -115,6 +116,23 @@ func (h *Hosts) process() []string {
 	}
 	slc = slc[:j+1]
 
+	// tally TLDs, if required
+	if tld {
+		h.TLDs = make(map[string]int)
+		for i := range slc {
+			ss := strings.Split(slc[i], ".")
+			if len(ss) > 1 {
+				s := ss[len(ss)-1]
+				_, ok := h.TLDs[s]
+				if ok {
+					h.TLDs[s] = h.TLDs[s] + 1
+				} else {
+					h.TLDs[s] = 1
+				}
+			}
+		}
+		fmt.Println(h.TLDs)
+	}
 	// custom domain sorting
 	if alphaSort {
 		sort.Sort(domainSort(slc))
@@ -289,6 +307,8 @@ func FlagSet() {
 
 	flag.BoolVar(&plainOutput, "p", false, "Return a plain output list of hosts?")
 	flag.BoolVar(&plainOutput, "plainOutput", false, "Return a plain output list of hosts")
+
+	flag.BoolVar(&tld, "tld", false, "Return the list of TLD and their tally")
 
 	// these flags are not yet implemented
 
