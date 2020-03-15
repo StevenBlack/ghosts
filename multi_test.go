@@ -17,6 +17,19 @@ func TestMultihostLines(t *testing.T) {
 	}
 }
 
+func TestTLD(t *testing.T) {
+	// testing for TLD Tallies
+	hf := Hosts{}
+	hf.Load("./test/data/hosts-multi")
+
+	got := len(hf.TLDs)
+	wantmorethan := 1
+
+	if got <= wantmorethan {
+		t.Errorf("got %d TLD, want more than %d", got, wantmorethan)
+	}
+}
+
 func TestEmbeddedComments(t *testing.T) {
 	// testing hosts lines with embedded comments
 	hf := Hosts{}
