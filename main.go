@@ -324,30 +324,24 @@ func reverse(a []string) []string {
 func FlagSet() {
 	defaultSource := "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
 	// -i, --input: The first hosts file to load, serving as a basis for what happens subsequently.  Default is StevenBlack hosts.
-	flag.StringVar(&inputHosts, "i", defaultSource, "The main list of hosts to analyze, or serve as a basis for comparison")
-	flag.StringVar(&inputHosts, "input", defaultSource, "The main list of hosts to analyze, or serve as a basis for comparison")
+	flag.StringVar(&inputHosts, "i", defaultSource, "The main list of hosts to analyze, or serve as a basis for comparison. A full URL, or a local file.")
 
 	// -c, --compare: The second hosts file to load in order to compare, or merge, with the first hosts file.
-	flag.StringVar(&compareHosts, "c", "", "Hosts list to compare")
-	flag.StringVar(&compareHosts, "compare", "", "Hosts list to compare")
+	flag.StringVar(&compareHosts, "c", "", "Hosts list to compare. A full URL, or a local file.")
 
-	flag.BoolVar(&output, "o", false, "Return the list of hosts?")
-	flag.BoolVar(&output, "output", false, "Return the list of hosts")
+	flag.BoolVar(&output, "o", false, "Return the list of hosts? (default false)")
 
-	flag.BoolVar(&intersectionList, "intersection", false, "Return the list of intersection hosts")
+	flag.BoolVar(&intersectionList, "intersection", false, "Return the list of intersection hosts? (default false)")
 
-	flag.BoolVar(&plainOutput, "p", false, "Return a plain output list of hosts?")
-	flag.BoolVar(&plainOutput, "plainOutput", false, "Return a plain output list of hosts")
+	flag.BoolVar(&plainOutput, "p", false, "Return a plain output list of hosts? (default false)")
 
-	flag.BoolVar(&tld, "tld", false, "Return the list of TLD and their tally")
+	flag.BoolVar(&tld, "tld", false, "Return the list of TLD and their tally (default false)")
 
 	// these flags are not yet implemented
 
 	flag.StringVar(&ipLocalhost, "ip", "0.0.0.0", "Localhost IP address")
-	flag.StringVar(&ipLocalhost, "ipaddress", "0.0.0.0", "Localhost IP address")
 
-	flag.BoolVar(&alphaSort, "s", false, "Sort the hosts?")
-	flag.BoolVar(&alphaSort, "sort", false, "Sort the hosts?")
+	flag.BoolVar(&alphaSort, "s", false, "Sort the hosts? (default false)")
 
 	flag.BoolVar(&stats, "stats", true, "display stats?")
 
