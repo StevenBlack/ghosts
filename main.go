@@ -58,6 +58,14 @@ func (h *Hosts) Summary(prefix string) string {
 	summary = append(summary, "Location: "+h.Location)
 	summary = append(summary, "Domains: "+humanize.Comma(int64(len(h.Domains))))
 	summary = append(summary, "Bytes: "+humanize.Bytes(uint64(int64(len(h.Raw)))))
+	if tld {
+		var s []string
+		for _, t := range h.TLDtallies {
+			s = append(s, t.tld + ": " + humanize.Comma(int64(t.tally)))
+		}
+		summary = append(summary, "TLD tally:\n   "+strings.Join(s, "\n   "))
+	}
+
 	summary = append(summary, strings.Repeat("-", sepLen))
 
 	return strings.Join(summary[:], "\n")
