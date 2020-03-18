@@ -7,7 +7,7 @@ import (
 func TestMultihostLines(t *testing.T) {
 	// testing for splitting multiple Domains per line into individual lines
 	hf := Hosts{}
-	hf.Load("./test/data/hosts-multi")
+	hf.Load("./test/hosts-multi")
 
 	got := len(hf.Domains)
 	wantmorethan := 1
@@ -20,7 +20,7 @@ func TestMultihostLines(t *testing.T) {
 func TestTLD(t *testing.T) {
 	// testing for TLD Tallies
 	hf := Hosts{}
-	hf.Load("./test/data/hosts-multi")
+	hf.Load("./test/hosts-multi")
 
 	got := len(hf.TLDs)
 	wantmorethan := 1
@@ -33,7 +33,7 @@ func TestTLD(t *testing.T) {
 func TestEmbeddedComments(t *testing.T) {
 	// testing hosts lines with embedded comments
 	hf := Hosts{}
-	hf.Load("./test/data/hosts-comments-embedded")
+	hf.Load("./test/hosts-comments-embedded")
 
 	got := len(hf.Domains)
 	want := 4
@@ -46,7 +46,7 @@ func TestEmbeddedComments(t *testing.T) {
 func TestDuplicates(t *testing.T) {
 	// testing hosts with duplicates
 	hf := Hosts{}
-	hf.Load("./test/data/hosts-duplicates")
+	hf.Load("./test/hosts-duplicates")
 
 	got := len(hf.Domains)
 	want := 5
@@ -65,7 +65,7 @@ func TestDuplicates(t *testing.T) {
 func TestJustText(t *testing.T) {
 	// testing a file with just text, no hosts
 	hf := Hosts{}
-	hf.Load("./test/data/hosts-text")
+	hf.Load("./test/hosts-text")
 
 	got := len(hf.Domains)
 	want := 0
