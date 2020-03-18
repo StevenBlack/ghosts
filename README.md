@@ -11,36 +11,23 @@ As chief curator of [StevenBlack/hosts](https://github.com/StevenBlack/hosts), I
 Get help just as you might expect:
 
 ```bash
-$ ./ghosts --help
-
+$ ./ghosts -h
 Usage of ./ghosts:
   -c string
-    	Hosts list to compare
-  -compare string
-    	Hosts list to compare
+    	Hosts list to compare. A full URL, or a local file.
   -i string
-    	The main list of hosts to analyze, or serve as a basis for comparison (default "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts")
-  -input string
-    	The main list of hosts to analyze, or serve as a basis for comparison (default "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts")
+    	The main list of hosts to analyze, or serve as a basis for comparison. A full URL, or a local file. (default "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts")
   -intersection
-    	Return the list of intersection hosts
+    	Return the list of intersection hosts? (default false)
   -ip string
     	Localhost IP address (default "0.0.0.0")
-  -ipaddress string
-    	Localhost IP address (default "0.0.0.0")
-  -o	Return the list of hosts?
-  -output
-    	Return the list of hosts
-  -p	Return a plain output list of hosts?
-  -plainOutput
-    	Return a plain output list of hosts
-  -s	Sort the hosts?
-  -sort
-    	Sort the hosts?
+  -o	Return the list of hosts? (default false)
+  -p	Return a plain output list of hosts? (default false)
+  -s	Sort the hosts? (default false)
   -stats
     	display stats? (default true)
   -tld
-      Return the list of TLD and their tally
+    	Return the list of TLD and their tally (default false)
 ```
 
 ## Running the tests
