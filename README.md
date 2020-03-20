@@ -4,8 +4,9 @@
 
 Here is what it does:
 
-* Summarize any hosts file retrieved over HTTP, or local file.
-* Summarize two hosts files, and determine their intersection.
+* Summarize any hosts file retrieved over HTTP, or from a local file.
+* Compare two hosts files, and determine their intersection.
+* List the tally of TLDs in the hosts file.
 * Output the hosts as a plain list of domains, or with IP4 pefix.
 * Sort the hosts coherently by domain, TLD, subdomain, subsubdomain, and so on.
 
