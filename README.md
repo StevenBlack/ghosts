@@ -1,8 +1,13 @@
 # ghosts
 
-A utility, written in Go, to evaluate, compare, and format hosts files.
+`ghosts` is a utility to evaluate, compare, and format hosts files.
 
-As chief curator of [StevenBlack/hosts](https://github.com/StevenBlack/hosts), I often need tools to evaluate and compare hosts files.  This repo provides tooling to help manage this.
+Here is what it does:
+
+* Summarize any hosts file retrieved over HTTP, or local file.
+* Summarize two hosts files, and determine their intersection.
+* Output the hosts as a plain list of domains, or with IP4 pefix.
+* Sort the hosts coherently by domain, TLD, subdomain, subsubdomain, and so on.
 
 ## Getting started
 
@@ -32,8 +37,14 @@ Usage of ./ghosts:
 
 ## Running the tests
 
+`$ go test` runs the test suite.
+
 ## Built With
+
+This utility is written with Go.
 
 ## Contributing
 
 ## License
+
+MIT.
