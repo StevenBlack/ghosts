@@ -54,5 +54,5 @@ MIT.
 
 ## Related repositories
 
-* [StevenBlack/hosts][https://github.com/StevenBlack/hosts] is my amalgamated hosts file, with custom variants, from various curated sources.
-* [StevenBlack/rhosts][https://github.com/StevenBlack/ghosts] hosts tools, written in Rust, just getting started on that.
+* [StevenBlack/hosts](https://github.com/StevenBlack/hosts) is my amalgamated hosts file, with custom variants, from various curated sources.
+* [StevenBlack/rhosts](https://github.com/StevenBlack/ghosts) hosts tools, written in Rust, just getting started on that.
