@@ -46,6 +46,8 @@ This utility is written with Go.
 
 ## Contributing
 
+TBA.
+
 ## License
 
 MIT.
