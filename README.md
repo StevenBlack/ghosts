@@ -17,8 +17,8 @@ Here is what it does:
 Get help just as you might expect:
 
 ```bash
-$ ./ghosts -h
-Usage of ./ghosts:
+$ ghosts -h
+Usage of ghosts:
   -c string
     	Hosts list to compare. A full URL, or a local file.
   -i string
@@ -27,6 +27,8 @@ Usage of ./ghosts:
     	Return the list of intersection hosts? (default false)
   -ip string
     	Localhost IP address (default "0.0.0.0")
+  -noheader
+    	Remove the file header from output? (default false)
   -o	Return the list of hosts? (default false)
   -p	Return a plain output list of hosts? (default false)
   -s	Sort the hosts? (default false)
