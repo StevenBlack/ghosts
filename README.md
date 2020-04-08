@@ -40,10 +40,6 @@ Usage of ./ghosts:
 
 `$ go test` runs the test suite.
 
-## Built With
-
-This utility is written with Go.
-
 ## Contributing
 
 TBA.
