@@ -28,6 +28,7 @@ type TLDtally struct {
 type Hosts struct {
 	Raw        []byte
 	Location   string
+        Header     []string
 	Domains    []string
 	TLDs       map[string]int
 	TLDtallies []TLDtally
@@ -39,6 +40,7 @@ func (h *Hosts) Reset() bool {
 	// zero everything
 	h.Raw = []byte{}
 	h.Location = ""
+        h.Header = []string{}
 	h.Domains = []string{}
 	h.TLDs = map[string]int{}
 	h.TLDtallies = []TLDtally{}
@@ -74,6 +76,16 @@ func (h *Hosts) Summary(prefix string) string {
 func (h *Hosts) process() []string {
 	// make a slice with the lines from the Raw domains
 	slc := strings.Split(string(h.Raw), "\n")
+
+        // Step: preserve the header
+        for i := range slc {
+                tst := strings.TrimSpace(slc[i])
+                if strings.HasPrefix(tst, "#") {
+                        h.Header = append(h.Header, slc[i])
+                } else {
+                        break
+                }
+        }
 
 	// Step: basic cleanup
 	for i := range slc {
