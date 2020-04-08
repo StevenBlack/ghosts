@@ -28,7 +28,7 @@ type TLDtally struct {
 type Hosts struct {
 	Raw        []byte
 	Location   string
-        Header     []string
+	Header     []string
 	Domains    []string
 	TLDs       map[string]int
 	TLDtallies []TLDtally
@@ -40,7 +40,7 @@ func (h *Hosts) Reset() bool {
 	// zero everything
 	h.Raw = []byte{}
 	h.Location = ""
-        h.Header = []string{}
+	h.Header = []string{}
 	h.Domains = []string{}
 	h.TLDs = map[string]int{}
 	h.TLDtallies = []TLDtally{}
@@ -63,7 +63,7 @@ func (h *Hosts) Summary(prefix string) string {
 	if tld {
 		var s []string
 		for _, t := range h.TLDtallies {
-			s = append(s, t.tld + ": " + humanize.Comma(int64(t.tally)))
+			s = append(s, t.tld+": "+humanize.Comma(int64(t.tally)))
 		}
 		summary = append(summary, "TLD tally:\n   "+strings.Join(s, "\n   "))
 	}
@@ -77,15 +77,15 @@ func (h *Hosts) process() []string {
 	// make a slice with the lines from the Raw domains
 	slc := strings.Split(string(h.Raw), "\n")
 
-        // Step: preserve the header
-        for i := range slc {
-                tst := strings.TrimSpace(slc[i])
-                if strings.HasPrefix(tst, "#") {
-                        h.Header = append(h.Header, slc[i])
-                } else {
-                        break
-                }
-        }
+	// Step: preserve the header
+	for i := range slc {
+		tst := strings.TrimSpace(slc[i])
+		if strings.HasPrefix(tst, "#") {
+			h.Header = append(h.Header, slc[i])
+		} else {
+			break
+		}
+	}
 
 	// Step: basic cleanup
 	for i := range slc {
