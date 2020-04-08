@@ -17,7 +17,7 @@ import (
 
 // Expose the command line flags we support
 var inputHosts, compareHosts, ipLocalhost string
-var alphaSort, output, plainOutput, stats, intersectionList, tld bool
+var alphaSort, output, plainOutput, stats, intersectionList, tld, noheader bool
 
 type TLDtally struct {
 	tld   string
@@ -80,7 +80,7 @@ func (h *Hosts) process() []string {
 	// Step: preserve the header
 	for i := range slc {
 		tst := strings.TrimSpace(slc[i])
-		if strings.HasPrefix(tst, "#") {
+		if strings.HasPrefix(tst, "#") || len(tst) == 0 {
 			h.Header = append(h.Header, slc[i])
 		} else {
 			break
@@ -187,8 +187,10 @@ func (h *Hosts) process() []string {
 
 	if output {
 		// first, the header
-		for i := range h.Header {
-			fmt.Println(h.Header[i])
+		if !noheader {
+			for i := range h.Header {
+				fmt.Println(h.Header[i])
+			}
 		}
 		prefix := ipLocalhost
 		for i := range slc {
@@ -349,6 +351,8 @@ func FlagSet() {
 
 	flag.BoolVar(&intersectionList, "intersection", false, "Return the list of intersection hosts? (default false)")
 
+	flag.BoolVar(&noheader, "noheader", false, "Remove the file header from output? (default false)")
+
 	flag.BoolVar(&plainOutput, "p", false, "Return a plain output list of hosts? (default false)")
 
 	flag.BoolVar(&tld, "tld", false, "Return the list of TLD and their tally (default false)")
@@ -383,6 +387,7 @@ func main() {
 		intersection := intersect.Simple(hf1.Domains, hf2.Domains)
 
 		if intersectionList {
+			// for now, unceremoniously dump the intersecting domains.
 			fmt.Println("intersection:", intersection)
 		}
 		fmt.Println("Intersection:", humanize.Comma(int64(len(intersection))), "domains")
