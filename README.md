@@ -1,6 +1,6 @@
 # ghosts
 
-`ghosts` is a utility to evaluate, compare, and format hosts files.
+`ghosts` is a utility to evaluate, compare, and format hosts files.  It's written in [Go](https://golang.org/).
 
 Here is what it does:
 
