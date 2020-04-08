@@ -1,4 +1,5 @@
 # this is a host file with four valid domains
+# The header of this file has 2-lines.
 127.0.0.1 some.domain
 # another comment
 127.0.0.1 some.other.domain other.domain # not.to.be.included
