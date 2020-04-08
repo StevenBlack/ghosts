@@ -100,7 +100,7 @@ func (h *Hosts) process() []string {
 		slc[i] = strings.ToLower(slc[i])
 	}
 
-	// discard blank lines
+	// Step: discard blank lines
 	slc = h.filter(slc, h.notEmpty)
 
 	// Step: remove line if it doesn't begin with an IP address
@@ -186,6 +186,10 @@ func (h *Hosts) process() []string {
 	h.Domains = slc
 
 	if output {
+		// first, the header
+		for i := range h.Header {
+			fmt.Println(h.Header[i])
+		}
 		prefix := ipLocalhost
 		for i := range slc {
 			if plainOutput {
@@ -348,8 +352,6 @@ func FlagSet() {
 	flag.BoolVar(&plainOutput, "p", false, "Return a plain output list of hosts? (default false)")
 
 	flag.BoolVar(&tld, "tld", false, "Return the list of TLD and their tally (default false)")
-
-	// these flags are not yet implemented
 
 	flag.StringVar(&ipLocalhost, "ip", "0.0.0.0", "Localhost IP address")
 
