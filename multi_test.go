@@ -31,12 +31,12 @@ func TestTLD(t *testing.T) {
 }
 
 func TestPreserveHeadder(t *testing.T) {
-	// testing hosts lines with embedded comments
+	// testing file header preservation.
 	hf := Hosts{}
 	hf.Load("./test/hosts-comments-embedded")
 
 	got := len(hf.Header)
-	want := 2
+	want := 4
 
 	if got != want {
 		t.Errorf("got %d header lines, want %d", got, want)
