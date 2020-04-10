@@ -1,0 +1,9 @@
+# A mash of eight hosts
+one.com
+two.com
+0.0.0.0 three.com four.com five.com
+six.com
+seven.com
+0.0.0.0 eight.com
+red herring line
+three.com

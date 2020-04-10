@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -136,5 +137,31 @@ func TestSorting(t *testing.T) {
 	if got != want {
 		t.Errorf("cc.ca < aa.cc.aa")
 	}
+}
 
+func TestMultiPlaintext(t *testing.T) {
+	// testing for splitting multiple Domains per line into individual lines
+	hf := Hosts{}
+	hf.Load("./test/hosts-plain-list")
+
+	got := len(hf.Domains)
+	want := 3
+
+	if got != want {
+		t.Errorf("got %d domain, want %d", got, want)
+	}
+}
+
+func TestMash(t *testing.T) {
+	// testing for splitting multiple Domains per line into individual lines
+	hf := Hosts{}
+	hf.Load("./test/hosts-mash")
+
+	got := len(hf.Domains)
+	want := 8
+
+	if got != want {
+		t.Errorf("got %d domain, want %d", got, want)
+		fmt.Println(hf.Domains)
+	}
 }

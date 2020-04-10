@@ -1,0 +1,8 @@
+# just 3 distinct plaintext domains
+foo.foo
+foo.bar
+foo.baz
+
+foo.foo
+foo.bar
+foo.baz
