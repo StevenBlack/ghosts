@@ -7,6 +7,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"regexp"
 	"sort"
 	"strings"
 	"time"
@@ -103,30 +104,30 @@ func (h *Hosts) process() []string {
 	// Step: discard blank lines
 	slc = h.filter(slc, h.notEmpty)
 
-	// Step: remove line if it doesn't begin with an IP address
-	var ipSlice []string
+	// step: line match regex for ip address, domain, or host
+	// This regex matches domain, or host
+	r, _ := regexp.Compile("((^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$)|((^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))(\\s+((?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]\\s*)+$)))")
+	var matchSlice []string
 	for i := range slc {
-		words := strings.Fields(slc[i])
-		if net.ParseIP(words[0]) == nil {
-			continue
+		if r.MatchString(slc[i]) {
+			words := strings.Fields(slc[i])
+			if net.ParseIP(words[0]) == nil {
+				// no IP segment - handle case of multi-host line
+				newSlice := strings.Split(slc[i], " ")
+				matchSlice = append(matchSlice, newSlice...)
+			} else {
+				// remove the IP segment
+				newSlice := strings.Split(strings.Join(words[1:], " "), " ")
+				matchSlice = append(matchSlice, newSlice...)
+			}
 		}
-		// removing the ip address
-		ipSlice = append(ipSlice, strings.Join(words[1:], " "))
 	}
-	slc = ipSlice
+	slc = matchSlice
 
 	// we could bail at this juncture
 	if len(slc) == 0 {
 		return slc
 	}
-
-	// Step: split multi-host lines
-	var outSlice []string
-	for i := range slc {
-		newSlice := strings.Split(slc[i], " ")
-		outSlice = append(outSlice, newSlice...)
-	}
-	slc = outSlice
 
 	// regular string sort for deduplication
 	sort.Sort(sort.StringSlice(slc))
