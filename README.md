@@ -17,10 +17,12 @@ Here is what it does:
 Get help just as you might expect:
 
 ```bash
-$ ghosts -h
-Usage of ghosts:
+$ ./ghosts -h
+Usage of ./ghosts:
   -c string
     	Hosts list to compare. A full URL, or a local file.
+  -clip
+    	The comparison hosts are in the system clipboard
   -i string
     	The main list of hosts to analyze, or serve as a basis for comparison. A full URL, or a local file. (default "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts")
   -intersection
