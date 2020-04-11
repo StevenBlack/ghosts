@@ -355,19 +355,17 @@ func reverse(a []string) []string {
 
 func FlagSet() {
 	defaultSource := "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
-	// -i, --input: The first hosts file to load, serving as a basis for what happens subsequently.  Default is StevenBlack hosts.
-	flag.StringVar(&mainHosts, "m", defaultSource, "The main list of hosts to analyze, or serve as a basis for comparison. A full URL, or a local file.")
-	// -c, --compare: The second hosts file to load in order to compare, or merge, with the first hosts file.
-	flag.StringVar(&compareHosts, "c", "", "Hosts list to compare. A full URL, or a local file. Use the --clip option to use what is on the system clipboard.")
-	flag.BoolVar(&output, "o", false, "Return the list of hosts? (default false)")
+	flag.StringVar(&compareHosts, "c", "", "Hosts list to compare. A full URL, or a local file.\nUse the -m option for the main comparison list.\nUse the --clip option to use what is on the system clipboard.")
+	flag.BoolVar(&sysclipboard, "clip", false, "The comparison hosts are in the system clipboard")
 	flag.BoolVar(&intersectionList, "intersection", false, "Return the list of intersection hosts? (default false)")
-	flag.BoolVar(&noheader, "noheader", false, "Remove the file header from output? (default false)")
-	flag.BoolVar(&plainOutput, "p", false, "Return a plain output list of hosts? (default false)")
-	flag.BoolVar(&tld, "tld", false, "Return the list of TLD and their tally (default false)")
 	flag.StringVar(&ipLocalhost, "ip", "0.0.0.0", "Localhost IP address")
+	flag.StringVar(&mainHosts, "m", defaultSource, "The main list of hosts to analyze, or serve as a basis for comparison. A full URL, or a local file.\n")
+	flag.BoolVar(&noheader, "noheader", false, "Remove the file header from output? (default false)")
+	flag.BoolVar(&output, "o", false, "Return the list of hosts? (default false)")
+	flag.BoolVar(&plainOutput, "p", false, "Return a plain output list of hosts, with no IP address prefix? (default false)")
 	flag.BoolVar(&alphaSort, "s", false, "Sort the hosts? (default false)")
 	flag.BoolVar(&stats, "stats", true, "display stats?")
-	flag.BoolVar(&sysclipboard, "clip", false, "The comparison hosts are in the system clipboard")
+	flag.BoolVar(&tld, "tld", false, "Return the list of TLD and their tally (default false)")
 	flag.Parse()
 	cmdTail = flag.Args()
 }

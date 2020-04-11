@@ -19,18 +19,21 @@ $ ./ghosts -h
 Usage of ./ghosts:
   -c string
     	Hosts list to compare. A full URL, or a local file.
+    	Use the -m option for the main comparison list.
+    	Use the --clip option to use what is on the system clipboard.
   -clip
     	The comparison hosts are in the system clipboard
-  -i string
-    	The main list of hosts to analyze, or serve as a basis for comparison. A full URL, or a local file. (default "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts")
   -intersection
     	Return the list of intersection hosts? (default false)
   -ip string
     	Localhost IP address (default "0.0.0.0")
+  -m string
+    	The main list of hosts to analyze, or serve as a basis for comparison. A full URL, or a local file.
+    	 (default "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts")
   -noheader
     	Remove the file header from output? (default false)
   -o	Return the list of hosts? (default false)
-  -p	Return a plain output list of hosts? (default false)
+  -p	Return a plain output list of hosts, with no IP address prefix? (default false)
   -s	Sort the hosts? (default false)
   -stats
     	display stats? (default true)
