@@ -20,6 +20,7 @@ import (
 // Expose the command line flags we support
 var inputHosts, compareHosts, ipLocalhost string
 var alphaSort, output, plainOutput, stats, intersectionList, tld, noheader, sysclipboard bool
+var cmdTail []string
 
 type TLDtally struct {
 	tld   string
@@ -379,6 +380,8 @@ func FlagSet() {
 	flag.BoolVar(&sysclipboard, "clip", false, "The comparison hosts are in the system clipboard")
 
 	flag.Parse()
+
+	cmdTail = flag.Args()
 }
 
 func main() {

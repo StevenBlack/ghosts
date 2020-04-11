@@ -12,9 +12,7 @@ Here is what it does:
 
 ## Getting started
 
-### Usage examples
-
-Get help just as you might expect:
+### Get help just as you might expect:
 
 ```bash
 $ ./ghosts -h
