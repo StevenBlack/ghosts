@@ -18,7 +18,7 @@ import (
 )
 
 // Expose the command line flags we support
-var inputHosts, compareHosts, ipLocalhost string
+var mainHosts, compareHosts, ipLocalhost string
 var alphaSort, output, plainOutput, stats, intersectionList, tld, noheader, sysclipboard bool
 var cmdTail []string
 
@@ -356,7 +356,7 @@ func reverse(a []string) []string {
 func FlagSet() {
 	defaultSource := "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
 	// -i, --input: The first hosts file to load, serving as a basis for what happens subsequently.  Default is StevenBlack hosts.
-	flag.StringVar(&inputHosts, "i", defaultSource, "The main list of hosts to analyze, or serve as a basis for comparison. A full URL, or a local file.")
+        flag.StringVar(&mainHosts, "m", defaultSource, "The main list of hosts to analyze, or serve as a basis for comparison. A full URL, or a local file.")
 	// -c, --compare: The second hosts file to load in order to compare, or merge, with the first hosts file.
 	flag.StringVar(&compareHosts, "c", "", "Hosts list to compare. A full URL, or a local file.")
 	flag.BoolVar(&output, "o", false, "Return the list of hosts? (default false)")
@@ -377,7 +377,7 @@ func main() {
 	FlagSet()
 
 	hf1 := Hosts{}
-	hf1.Load(inputHosts)
+        hf1.Load(mainHosts)
 
 	if stats && !output {
 		fmt.Println(hf1.Summary("Base hosts file"))
