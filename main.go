@@ -12,13 +12,14 @@ import (
 	"strings"
 	"time"
 
+	"github.com/atotto/clipboard"
 	"github.com/dustin/go-humanize"
 	"github.com/juliangruber/go-intersect"
 )
 
 // Expose the command line flags we support
 var inputHosts, compareHosts, ipLocalhost string
-var alphaSort, output, plainOutput, stats, intersectionList, tld, noheader bool
+var alphaSort, output, plainOutput, stats, intersectionList, tld, noheader, sysclipboard bool
 
 type TLDtally struct {
 	tld   string
@@ -248,6 +249,17 @@ func (h *Hosts) loadURL(url string) int {
 	return len(body)
 }
 
+// Load hosts from the clipboard
+func (h *Hosts) LoadClipboard(clip string) int {
+	// loading hosts from the file system
+	h.Reset()
+	bytes := []byte(clip)
+	h.Location = "clipboard"
+	h.Raw = bytes
+	h.process()
+	return len(bytes)
+}
+
 func (h Hosts) length() int {
 	return len(h.Domains)
 }
@@ -364,6 +376,8 @@ func FlagSet() {
 
 	flag.BoolVar(&stats, "stats", true, "display stats?")
 
+	flag.BoolVar(&sysclipboard, "clip", false, "The comparison hosts are in the system clipboard")
+
 	flag.Parse()
 }
 
@@ -383,6 +397,21 @@ func main() {
 		hf2.Load(compareHosts)
 		if stats && !output {
 			fmt.Println(hf2.Summary("Compared hosts file"))
+		}
+
+		intersection := intersect.Simple(hf1.Domains, hf2.Domains)
+
+		if intersectionList {
+			// for now, unceremoniously dump the intersecting domains.
+			fmt.Println("intersection:", intersection)
+		}
+		fmt.Println("Intersection:", humanize.Comma(int64(len(intersection))), "domains")
+	} else if sysclipboard {
+		hf2 := Hosts{}
+		clip, _ := clipboard.ReadAll()
+		hf2.LoadClipboard(clip)
+		if stats && !output {
+			fmt.Println(hf2.Summary("Compared hosts from clipboard"))
 		}
 
 		intersection := intersect.Simple(hf1.Domains, hf2.Domains)
