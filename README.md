@@ -12,7 +12,7 @@ Here is what it does:
 
 ## Getting started
 
-### Get help just as you might expect:
+### Get help just as you might expect
 
 ```bash
 $ ./ghosts -h
@@ -39,6 +39,67 @@ Usage of ./ghosts:
     	display stats? (default true)
   -tld
     	Return the list of TLD and their tally (default false)
+```
+
+### Summarize statistics from any hosts file
+
+**If you specify no hosts file**, by default a summary of [StevenBlack/hosts](https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts) is produced.
+
+```
+$ ./ghosts
+--------------------------------------------------------------------------------
+Base hosts file summary:
+--------------------------------------------------------------------------------
+Location: https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+Domains: 54,702
+Bytes: 1.7 MB
+--------------------------------------------------------------------------------
+```
+**Specify any hosts file to summarize** by using the `-m` option, like this:
+
+```
+$ ./ghosts -m https://someonewhocares.org/hosts/zero/hosts
+--------------------------------------------------------------------------------
+Base hosts file summary:
+--------------------------------------------------------------------------------
+Location: https://someonewhocares.org/hosts/zero/hosts
+Domains: 14,401
+Bytes: 417 kB
+--------------------------------------------------------------------------------
+```
+**Append a top-level-domain (TLD) report** by using the `-tld` option, like this:
+
+```
+$ ./ghosts -m https://someonewhocares.org/hosts/zero/hosts -tld
+--------------------------------------------------------------------------------
+Base hosts file summary:
+--------------------------------------------------------------------------------
+Location: https://someonewhocares.org/hosts/zero/hosts
+Domains: 14,401
+Bytes: 417 kB
+TLD tally:
+   com: 8,683
+   net: 2,231
+   info: 479
+   ru: 291
+   de: 232
+   pl: 181
+   org: 174
+   fr: 147
+   nl: 140
+   at: 133
+   uk: 117
+
+skipping many lines for brevity 
+
+   bo: 1
+   rw: 1
+   guru: 1
+   ae: 1
+   men: 1
+   ga: 1
+   watch: 1
+   ac: 1
 ```
 
 ## Running the tests
