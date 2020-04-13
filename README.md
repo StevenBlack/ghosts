@@ -147,7 +147,7 @@ Domains: 10,473
 Bytes: 392 kB
 --------------------------------------------------------------------------------
 intersection: [006.free-counter.co.uk 102.112.2o7.net 102.122.2o7.net 122.2o7.net 192.168.112.2o7.net 
-1ca.cqcounter.com 1uk.cqcounter.com 1up.us.intellitxt.com 1us.cqcounter.com .... Long list ]
+1ca.cqcounter.com 1uk.cqcounter.com 1up.us.intellitxt.com 1us.cqcounter.com .... long list ]
 Intersection: 1,548 domains
 ```
 
