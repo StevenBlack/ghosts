@@ -19,7 +19,7 @@ import (
 
 // Expose the command line flags we support
 var mainHosts, compareHosts, ipLocalhost string
-var alphaSort, output, plainOutput, stats, intersectionList, tld, noheader, sysclipboard bool
+var addDefaults, alphaSort, output, plainOutput, stats, intersectionList, tld, noheader, sysclipboard bool
 var cmdTail []string
 
 type TLDtally struct {
@@ -195,6 +195,26 @@ func (h *Hosts) process() []string {
 				fmt.Println(h.Header[i])
 			}
 		}
+
+		// add defaults
+		if addDefaults && !plainOutput {
+			fmt.Println("127.0.0.1 localhost")
+			fmt.Println("127.0.0.1 localhost.localdomain")
+			fmt.Println("127.0.0.1 local")
+			fmt.Println("255.255.255.255 broadcasthost")
+			fmt.Println("::1 localhost")
+			fmt.Println("::1 ip6-localhost")
+			fmt.Println("::1 ip6-loopback")
+			fmt.Println("fe80::1%lo0 localhost")
+			fmt.Println("ff00::0 ip6-localnet")
+			fmt.Println("ff00::0 ip6-mcastprefix")
+			fmt.Println("ff02::1 ip6-allnodes")
+			fmt.Println("ff02::2 ip6-allrouters")
+			fmt.Println("ff02::3 ip6-allhosts")
+			fmt.Println("0.0.0.0 0.0.0.0")
+			fmt.Println("")
+		}
+
 		prefix := ipLocalhost
 		for i := range slc {
 			if plainOutput {
@@ -357,6 +377,7 @@ func FlagSet() {
 	defaultSource := "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
 	flag.StringVar(&compareHosts, "c", "", "Hosts list to compare. A full URL, or a local file.\nUse the -m option for the main comparison list.\nUse the --clip option to use what is on the system clipboard.")
 	flag.BoolVar(&sysclipboard, "clip", false, "The comparison hosts are in the system clipboard")
+	flag.BoolVar(&addDefaults, "d", false, "Include default hosts at the top of file.")
 	flag.BoolVar(&intersectionList, "intersection", false, "Return the list of intersection hosts? (default false)")
 	flag.StringVar(&ipLocalhost, "ip", "0.0.0.0", "Localhost IP address")
 	flag.StringVar(&mainHosts, "m", defaultSource, "The main list of hosts to analyze, or serve as a basis for comparison. A full URL, or a local file.\n")
