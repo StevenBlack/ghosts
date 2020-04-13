@@ -24,12 +24,14 @@ Usage of ./ghosts:
     	Use the --clip option to use what is on the system clipboard.
   -clip
     	The comparison hosts are in the system clipboard
+  -d	Include default hosts at the top of file.
   -intersection
     	Return the list of intersection hosts? (default false)
   -ip string
     	Localhost IP address (default "0.0.0.0")
   -m string
-    	The main list of hosts to analyze, or serve as a basis for comparison. A full URL, or a local file.
+    	The main list of hosts to analyze, or serve as a basis for comparison.
+    	A full URL, or a local file.
     	 (default "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts")
   -noheader
     	Remove the file header from output? (default false)

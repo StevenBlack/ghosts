@@ -380,7 +380,7 @@ func FlagSet() {
 	flag.BoolVar(&addDefaults, "d", false, "Include default hosts at the top of file.")
 	flag.BoolVar(&intersectionList, "intersection", false, "Return the list of intersection hosts? (default false)")
 	flag.StringVar(&ipLocalhost, "ip", "0.0.0.0", "Localhost IP address")
-	flag.StringVar(&mainHosts, "m", defaultSource, "The main list of hosts to analyze, or serve as a basis for comparison. A full URL, or a local file.\n")
+	flag.StringVar(&mainHosts, "m", defaultSource, "The main list of hosts to analyze, or serve as a basis for comparison.\nA full URL, or a local file.\n")
 	flag.BoolVar(&noheader, "noheader", false, "Remove the file header from output? (default false)")
 	flag.BoolVar(&output, "o", false, "Return the list of hosts? (default false)")
 	flag.BoolVar(&plainOutput, "p", false, "Return a plain output list of hosts, with no IP address prefix? (default false)")
