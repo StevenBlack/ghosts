@@ -2,10 +2,11 @@
 
 `ghosts` is a utility to evaluate, compare, and format hosts files.  It's written in [Go](https://golang.org/).
 
-Here is what it does:
+Here is what `ghosts` does:
 
 * Summarize any hosts file retrieved over HTTP, or from a local file.
 * Compare two hosts files, and determine their intersection.
+* Compare a reference hosts file with a list of hosts presently in your system clipboard.
 * List the tally of TLDs in the hosts file.
 * Output the hosts as a plain list of domains, or with IP4 pefix.
 * Sort the hosts coherently by domain, TLD, subdomain, subsubdomain, and so on.
@@ -67,7 +68,7 @@ Domains: 14,401
 Bytes: 417 kB
 --------------------------------------------------------------------------------
 ```
-**Append a top-level-domain (TLD) report** by using the `-tld` option, like this:
+**Additionally produce a top-level-domain (TLD) report** by using the `-tld` option, like this:
 
 ```
 $ ./ghosts -m https://someonewhocares.org/hosts/zero/hosts -tld
@@ -101,6 +102,55 @@ skipping many lines for brevity
    watch: 1
    ac: 1
 ```
+
+**Compare two hosts files, local or remote, and assess their intersection** by specifying `-m <location>` option for the main hosts file and `-c <location>` option for the second comparison file.
+
+Let's compare the **someonewhocares.org** hosts file (14,401 domains) to the one at **mvps.org** (10,473 domains).  The basic report tells us there are 1,548 domains in the interseation of the two.
+
+```
+$ ./ghosts -m https://someonewhocares.org/hosts/zero/hosts -c http://winhelp2002.mvps.org/hosts.txt
+--------------------------------------------------------------------------------
+Base hosts file summary:
+--------------------------------------------------------------------------------
+Location: https://someonewhocares.org/hosts/zero/hosts
+Domains: 14,401
+Bytes: 417 kB
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Compared hosts file summary:
+--------------------------------------------------------------------------------
+Location: http://winhelp2002.mvps.org/hosts.txt
+Domains: 10,473
+Bytes: 392 kB
+--------------------------------------------------------------------------------
+Intersection: 1,548 domains
+```
+
+**Compare two hosts files, local or remote, and LIST their intersection** by specifying `-m <location>` option for the main hosts file, `-c <location>` option for the second comparison file, and add the `--intersection` flag to get the detailed list of the intersecting domains..
+
+Let's compare the **someonewhocares.org** hosts file (14,401 domains) to the one at **mvps.org** (10,473 domains).  The basic report shows us all 1,548 domains in the interseation of the two.
+
+```
+$ ./ghosts -m https://someonewhocares.org/hosts/zero/hosts -c http://winhelp2002.mvps.org/hosts.txt --intersection
+--------------------------------------------------------------------------------
+Base hosts file summary:
+--------------------------------------------------------------------------------
+Location: https://someonewhocares.org/hosts/zero/hosts
+Domains: 14,401
+Bytes: 417 kB
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Compared hosts file summary:
+--------------------------------------------------------------------------------
+Location: http://winhelp2002.mvps.org/hosts.txt
+Domains: 10,473
+Bytes: 392 kB
+--------------------------------------------------------------------------------
+intersection: [006.free-counter.co.uk 102.112.2o7.net 102.122.2o7.net 122.2o7.net 192.168.112.2o7.net 
+1ca.cqcounter.com 1uk.cqcounter.com 1up.us.intellitxt.com 1us.cqcounter.com .... Long list ]
+Intersection: 1,548 domains
+```
+
 
 ## Running the tests
 
