@@ -153,6 +153,44 @@ intersection: [006.free-counter.co.uk 102.112.2o7.net 102.122.2o7.net 122.2o7.ne
 Intersection: 1,548 domains
 ```
 
+### Output a list of domains in hosts format, or as a plaintext list
+
+To list domains, use the `-o [optional file]` option.  If you provide no file mame, the list goes to `stdout`.
+
+To sort the domains, use the `-s` flag.
+
+#### Hosts format output
+
+The output is in hosts format by default.  The default IP address is `0.0.0.0`, and you can change that with the `-ip` option. for example, `-ip 127.0.0.1` will list the hosts with a `127.0.0.1` prefix.
+
+The hosts output will include the header of the original source file.  This header typically includes information about the author, and sometimes includes a copyright statement.  To not include the header, use the `-noheader` flag.
+
+To include the list of default hosts at the top of the hosts output, use the `d` flag.  By default the list of hosts does not include the loopback hosts at the top of the list.
+
+These are the default hosts that will be included with the `-d` flag.
+
+```
+127.0.0.1 localhost
+127.0.0.1 localhost.localdomain
+127.0.0.1 local
+255.255.255.255 broadcasthost
+::1 localhost
+::1 ip6-localhost
+::1 ip6-loopback
+fe80::1%lo0 localhost
+ff00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+ff02::3 ip6-allhosts
+0.0.0.0 0.0.0.0
+```
+
+#### Plaintext domains output
+
+To get a plaintext list of domains, use the `-p` flag.
+
+
 
 ## Running the tests
 

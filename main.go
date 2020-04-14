@@ -375,7 +375,7 @@ func reverse(a []string) []string {
 
 func FlagSet() {
 	defaultSource := "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
-	flag.StringVar(&compareHosts, "c", "", "Hosts list to compare. A full URL, or a local file.\nUse the -m option for the main comparison list.\nUse the --clip option to use what is on the system clipboard.")
+	flag.StringVar(&compareHosts, "c", "", "Hosts list to compare. A full URL, or a local file.\nUse the -m option for the main comparison list.\nUse the -clip option to use what is on the system clipboard.")
 	flag.BoolVar(&sysclipboard, "clip", false, "The comparison hosts are in the system clipboard")
 	flag.BoolVar(&addDefaults, "d", false, "Include default hosts at the top of file.")
 	flag.BoolVar(&intersectionList, "intersection", false, "Return the list of intersection hosts? (default false)")
