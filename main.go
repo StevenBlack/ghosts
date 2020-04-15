@@ -55,7 +55,7 @@ func (h *Hosts) Reset() bool {
 // summarize the hosts
 func (h *Hosts) Summary(prefix string) string {
 	var summary []string
-	sepLen := 80
+	sepLen := 70
 
 	summary = append(summary, strings.Repeat("-", sepLen))
 	summary = append(summary, prefix+" summary:")
