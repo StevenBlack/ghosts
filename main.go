@@ -409,7 +409,7 @@ func main() {
 			fmt.Println(hf2.Summary("Compared hosts file"))
 		}
 
-		intersection := intersect.Simple(hf1.Domains, hf2.Domains)
+		intersection := intersect.Hash(hf1.Domains, hf2.Domains)
 
 		if intersectionList {
 			// for now, unceremoniously dump the intersecting domains.
@@ -424,7 +424,7 @@ func main() {
 			fmt.Println(hf2.Summary("Compared hosts from clipboard"))
 		}
 
-		intersection := intersect.Simple(hf1.Domains, hf2.Domains)
+		intersection := intersect.Hash(hf1.Domains, hf2.Domains)
 
 		if intersectionList {
 			// for now, unceremoniously dump the intersecting domains.
