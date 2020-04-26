@@ -16,32 +16,34 @@ Here is what `ghosts` does:
 ### Get help just as you might expect
 
 ```bash
-$ ./ghosts -h
+$ ./ghosts -h                                                                                             
 Usage of ./ghosts:
   -c string
-    	Hosts list to compare. A full URL, or a local file.
-    	Use the -m option for the main comparison list.
-    	Use the --clip option to use what is on the system clipboard.
+        Hosts list to compare. A full URL, or a local file.
+        Use the -m option for the main comparison list.
+        Use the -clip option to use what is on the system clipboard.
   -clip
-    	The comparison hosts are in the system clipboard
-  -d	Include default hosts at the top of file.
+        The comparison hosts are in the system clipboard
+  -d    Include default hosts at the top of file.
   -intersection
-    	Return the list of intersection hosts? (default false)
+        Return the list of intersection hosts? (default false)
   -ip string
-    	Localhost IP address (default "0.0.0.0")
+        Localhost IP address (default "0.0.0.0")
   -m string
-    	The main list of hosts to analyze, or serve as a basis for comparison.
-    	A full URL, or a local file.
-    	 (default "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts")
+        The main list of hosts to analyze, or serve as a basis for comparison.
+        A full URL, or a local file.
+         (default "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts")
   -noheader
-    	Remove the file header from output? (default false)
-  -o	Return the list of hosts? (default false)
-  -p	Return a plain output list of hosts, with no IP address prefix? (default false)
-  -s	Sort the hosts? (default false)
+        Remove the file header from output? (default false)
+  -o    Return the list of hosts? (default false)
+  -p    Return a plain output list of hosts, with no IP address prefix? (default false)
+  -s    Sort the hosts? (default false)
   -stats
-    	display stats? (default true)
+        display stats? (default true)
   -tld
-    	Return the list of TLD and their tally (default false)
+        Return the list of TLD and their tally (default false)
+  -unique
+        List the unique domains in the comparison list
 ```
 
 ### Summarize statistics from any hosts file
@@ -128,7 +130,7 @@ Bytes: 392 kB
 Intersection: 1,548 domains
 ```
 
-**Compare two hosts files, local or remote, and LIST their intersection** by specifying `-m <location>` option for the main hosts file, `-c <location>` option for the second comparison file, and add the `--intersection` flag to get the detailed list of the intersecting domains..
+**Compare two hosts files, local or remote, and LIST their intersection** by specifying `-m <location>` option for the main hosts file, `-c <location>` option for the second comparison file, and add the `--intersection` flag to get the detailed list of the intersecting domains.
 
 Let's compare the **someonewhocares.org** hosts file (14,401 domains) to the one at **mvps.org** (10,473 domains).  The basic report shows us all 1,548 domains in the interseation of the two.
 
@@ -152,6 +154,9 @@ intersection: [006.free-counter.co.uk 102.112.2o7.net 102.122.2o7.net 122.2o7.ne
 1ca.cqcounter.com 1uk.cqcounter.com 1up.us.intellitxt.com 1us.cqcounter.com .... long list ]
 Intersection: 1,548 domains
 ```
+
+**Compare two hosts files, local or remote, and list what's unique in the second file** by specifying `-m <location>` option for the main hosts file, `-c <location>` option for the second comparison file, and add the `--unique` flag to get the list of domains in the comparison file that are not in the main hoss file.
+
 
 ### Output a list of domains in hosts format, or as a plaintext list
 
