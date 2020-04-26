@@ -15,11 +15,12 @@ import (
 	"github.com/atotto/clipboard"
 	"github.com/dustin/go-humanize"
 	"github.com/juliangruber/go-intersect"
+	"github.com/thoas/go-funk"
 )
 
 // Expose the command line flags we support
 var mainHosts, compareHosts, ipLocalhost string
-var addDefaults, alphaSort, output, plainOutput, stats, intersectionList, tld, noheader, sysclipboard bool
+var addDefaults, alphaSort, output, plainOutput, stats, intersectionList, tld, noheader, sysclipboard, uniquelist bool
 var cmdTail []string
 
 type TLDtally struct {
@@ -379,6 +380,7 @@ func FlagSet() {
 	flag.BoolVar(&sysclipboard, "clip", false, "The comparison hosts are in the system clipboard")
 	flag.BoolVar(&addDefaults, "d", false, "Include default hosts at the top of file.")
 	flag.BoolVar(&intersectionList, "intersection", false, "Return the list of intersection hosts? (default false)")
+	flag.BoolVar(&uniquelist, "unique", false, "List the unique domains in the comparison list")
 	flag.StringVar(&ipLocalhost, "ip", "0.0.0.0", "Localhost IP address")
 	flag.StringVar(&mainHosts, "m", defaultSource, "The main list of hosts to analyze, or serve as a basis for comparison.\nA full URL, or a local file.\n")
 	flag.BoolVar(&noheader, "noheader", false, "Remove the file header from output? (default false)")
@@ -416,6 +418,11 @@ func main() {
 			fmt.Println("intersection:", intersection)
 		}
 		fmt.Println("Intersection:", humanize.Comma(int64(len(intersection))), "domains")
+
+		if uniquelist {
+			_, uniq := funk.Difference(intersection, hf2.Domains)
+			fmt.Println("unique in comparison list:", uniq)
+		}
 	} else if sysclipboard {
 		hf2 := Hosts{}
 		clip, _ := clipboard.ReadAll()
@@ -431,5 +438,10 @@ func main() {
 			fmt.Println("intersection:", intersection)
 		}
 		fmt.Println("Intersection:", humanize.Comma(int64(len(intersection))), "domains")
+
+		if uniquelist {
+			_, uniq := funk.Difference(hf1.Domains, hf2.Domains)
+			fmt.Println("unique in comparison list:", uniq)
+		}
 	}
 }
