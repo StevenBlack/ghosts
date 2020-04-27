@@ -14,7 +14,6 @@ import (
 
 	"github.com/atotto/clipboard"
 	"github.com/dustin/go-humanize"
-	"github.com/juliangruber/go-intersect"
 	"github.com/thoas/go-funk"
 )
 
@@ -411,8 +410,7 @@ func main() {
 			fmt.Println(hf2.Summary("Compared hosts file"))
 		}
 
-		intersection := intersect.Hash(hf1.Domains, hf2.Domains)
-
+		intersection := funk.IntersectString(hf1.Domains, hf2.Domains)
 		if intersectionList {
 			// for now, unceremoniously dump the intersecting domains.
 			fmt.Println("intersection:", intersection)
@@ -431,7 +429,7 @@ func main() {
 			fmt.Println(hf2.Summary("Compared hosts from clipboard"))
 		}
 
-		intersection := intersect.Hash(hf1.Domains, hf2.Domains)
+		intersection := funk.IntersectString(hf1.Domains, hf2.Domains)
 
 		if intersectionList {
 			// for now, unceremoniously dump the intersecting domains.
