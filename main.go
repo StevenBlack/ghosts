@@ -29,13 +29,15 @@ type TLDtally struct {
 
 // A Hosts struct holds all the facets of a collection of hosts.
 type Hosts struct {
-	Raw        []byte
-	Location   string
-	Header     []string
-	Domains    []string
-	TLDs       map[string]int
-	TLDtallies []TLDtally
-	Duplicates []string
+	Raw          []byte
+	Location     string
+	Header       []string
+	Domains      []string
+	TLDs         map[string]int
+	TLDtallies   []TLDtally
+	Duplicates   []string
+	Intersection []string
+	Unique       []string
 }
 
 // Reset the Hosts structure to an initial, unloaded state.
@@ -48,6 +50,8 @@ func (h *Hosts) Reset() bool {
 	h.TLDs = map[string]int{}
 	h.TLDtallies = []TLDtally{}
 	h.Duplicates = []string{}
+	h.Intersection = []string{}
+	h.Unique = []string{}
 
 	return true
 }
@@ -410,16 +414,16 @@ func main() {
 			fmt.Println(hf2.Summary("Compared hosts file"))
 		}
 
-		intersection := funk.IntersectString(hf1.Domains, hf2.Domains)
+		hf2.Intersection = funk.IntersectString(hf1.Domains, hf2.Domains)
 		if intersectionList {
 			// for now, unceremoniously dump the intersecting domains.
-			fmt.Println("intersection:", intersection)
+			fmt.Println("intersection:", hf2.Intersection)
 		}
-		fmt.Println("Intersection:", humanize.Comma(int64(len(intersection))), "domains")
+		fmt.Println("Intersection:", humanize.Comma(int64(len(hf2.Intersection))), "domains")
 
 		if uniquelist {
-			_, uniq := funk.Difference(intersection, hf2.Domains)
-			fmt.Println("unique in comparison list:", uniq)
+			_, hf2.Unique = funk.DifferenceString(hf2.Intersection, hf2.Domains)
+			fmt.Println("unique in comparison list:", hf2.Unique)
 		}
 	} else if sysclipboard {
 		hf2 := Hosts{}
@@ -429,17 +433,17 @@ func main() {
 			fmt.Println(hf2.Summary("Compared hosts from clipboard"))
 		}
 
-		intersection := funk.IntersectString(hf1.Domains, hf2.Domains)
+		hf2.Intersection = funk.IntersectString(hf1.Domains, hf2.Domains)
 
 		if intersectionList {
 			// for now, unceremoniously dump the intersecting domains.
-			fmt.Println("intersection:", intersection)
+			fmt.Println("intersection:", hf2.Intersection)
 		}
-		fmt.Println("Intersection:", humanize.Comma(int64(len(intersection))), "domains")
+		fmt.Println("Intersection:", humanize.Comma(int64(len(hf2.Intersection))), "domains")
 
 		if uniquelist {
-			_, uniq := funk.Difference(hf1.Domains, hf2.Domains)
-			fmt.Println("unique in comparison list:", uniq)
+			_, hf2.Unique = funk.DifferenceString(hf2.Intersection, hf2.Domains)
+			fmt.Println("unique in comparison list:", hf2.Unique)
 		}
 	}
 }
