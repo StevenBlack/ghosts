@@ -165,3 +165,17 @@ func TestMash(t *testing.T) {
 		fmt.Println(hf.Domains)
 	}
 }
+
+func TestUnderscores(t *testing.T) {
+	// testing for splitting multiple Domains per line into individual lines
+	hf := Hosts{}
+	hf.Load("./test/hosts-underscores")
+
+	got := len(hf.Domains)
+	want := 2
+
+	if got != want {
+		t.Errorf("got %d domain, want %d", got, want)
+		fmt.Println(hf.Domains)
+	}
+}
