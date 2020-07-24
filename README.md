@@ -16,7 +16,7 @@ Here is what `ghosts` does:
 ### Get help just as you might expect
 
 ```bash
-$ ./ghosts -h                                                                                             
+$ ./ghosts -h
 Usage of ./ghosts:
   -c string
         Hosts list to compare. A full URL, or a local file.
@@ -95,7 +95,7 @@ TLD tally:
    at: 133
    uk: 117
 
-skipping many lines for brevity 
+skipping many lines for brevity
 
    bo: 1
    rw: 1
@@ -150,7 +150,7 @@ Location: http://winhelp2002.mvps.org/hosts.txt
 Domains: 10,473
 Bytes: 392 kB
 --------------------------------------------------------------------------------
-intersection: [006.free-counter.co.uk 102.112.2o7.net 102.122.2o7.net 122.2o7.net 192.168.112.2o7.net 
+intersection: [006.free-counter.co.uk 102.112.2o7.net 102.122.2o7.net 122.2o7.net 192.168.112.2o7.net
 1ca.cqcounter.com 1uk.cqcounter.com 1up.us.intellitxt.com 1us.cqcounter.com .... long list ]
 Intersection: 1,548 domains
 ```
@@ -212,4 +212,4 @@ MIT.
 ## Related repositories
 
 * [StevenBlack/hosts](https://github.com/StevenBlack/hosts) is my amalgamated hosts file, with custom variants, from various curated sources.
-* [StevenBlack/rhosts](https://github.com/StevenBlack/ghosts) hosts tools, written in Rust, just getting started on that.
+* [StevenBlack/rhosts](https://github.com/StevenBlack/rhosts) hosts tools, written in Rust, just getting started on that.
