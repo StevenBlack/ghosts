@@ -20,7 +20,6 @@ import (
 // Expose the command line flags we support
 var mainHosts, compareHosts, ipLocalhost string
 var addDefaults, alphaSort, output, plainOutput, stats, intersectionList, tld, noheader, sysclipboard, uniquelist bool
-var cmdTail []string
 
 type TLDtally struct {
 	tld   string
@@ -393,7 +392,6 @@ func FlagSet() {
 	flag.BoolVar(&stats, "stats", true, "display stats?")
 	flag.BoolVar(&tld, "tld", false, "Return the list of TLD and their tally (default false)")
 	flag.Parse()
-	cmdTail = flag.Args()
 }
 
 func main() {
