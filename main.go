@@ -256,7 +256,7 @@ func (h *Hosts) Loadfile(file string) int {
 func (h *Hosts) loadURL(url string) int {
 	// loading hosts from a url
 	h.Reset()
-	client := http.Client{
+	var client = http.Client{
 		Timeout: time.Duration(5000 * time.Millisecond),
 	}
 	resp, err := client.Get(url)
