@@ -8,5 +8,5 @@ require (
 	github.com/fatih/color v1.10.0 // indirect
 	github.com/rakyll/gotest v0.0.5 // indirect
 	github.com/thoas/go-funk v0.8.0
-	golang.org/x/sys v0.0.0-20210403161142-5e06dd20ab57 // indirect
+	golang.org/x/sys v0.0.0-20210415045647-66c3f260301c // indirect
 )
