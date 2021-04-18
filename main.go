@@ -421,7 +421,8 @@ func main() {
 
 		if uniquelist {
 			_, hf2.Unique = funk.DifferenceString(hf2.Intersection, hf2.Domains)
-			fmt.Println("unique in comparison list:", hf2.Unique)
+			fmt.Println(strings.Repeat("-", 40))
+			fmt.Println("Unique in comparison list — ", humanize.Comma(int64(len(hf2.Unique))), "domains", hf2.Unique)
 		}
 	} else if sysclipboard {
 		hf2 := Hosts{}
