@@ -1,4 +1,4 @@
-module github.com/esadkrs/ghosts.git
+module github.com/esadkrs/ghosts
 
 go 1.16
 
