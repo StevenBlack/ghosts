@@ -200,6 +200,7 @@ To get a plaintext list of domains, use the `-p` flag.
 ## Running the tests
 
 `$ go test` runs the test suite.
+`$ gotest` runs colorized tests.
 
 ## Contributing
 
