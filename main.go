@@ -384,7 +384,29 @@ func FlagSet() {
 	flag.BoolVar(&intersectionList, "intersection", false, "Return the list of intersection hosts? (default false)")
 	flag.BoolVar(&uniquelist, "unique", false, "List the unique domains in the comparison list")
 	flag.StringVar(&ipLocalhost, "ip", "0.0.0.0", "Localhost IP address")
-	flag.StringVar(&mainHosts, "m", defaultMainHosts, "The main list of hosts to analyze, or serve as a basis for comparison.\nA full URL, or a local file.\n")
+	flag.StringVar(&mainHosts, "m", defaultMainHosts, `The main list of hosts to analyze, or serve as a basis for comparison.
+A shortcut code, a full URL, or a local file.
+
+Shortcut codes
+==============
+The following shortcut codes can be used to select among preset main lists.
+-m b or -m base // use Steven Black's base list.
+-m f    // use alternates/fakenews/hosts
+-m fg   // use alternates/fakenews-gambling/hosts
+-m fgp  // use alternates/fakenews-gambling-porn/hosts
+-m fgps // use alternates/fakenews-gambling-porn-social/hosts
+-m fgs  // use alternates/fakenews-gambling-social/hosts
+-m fp   // use alternates/fakenews-porn/hosts
+-m fps  // use alternates/fakenews-porn-social/hosts
+-m fs   // use alternates/fakenews-social/hosts
+-m g    // use alternates/gambling/hosts
+-m gp   // use alternates/gambling-porn/hosts
+-m gps  // use alternates/gambling-porn-social/hosts
+-m gs   // use alternates/gambling-social/hosts
+-m p    // use alternates/porn/hosts
+-m ps   // use alternates/porn-social/hosts
+-m s    // use alternates/social/hosts
+`)
 	flag.BoolVar(&noheader, "noheader", false, "Remove the file header from output? (default false)")
 	flag.BoolVar(&output, "o", false, "Return the list of hosts? (default false)")
 	flag.BoolVar(&plainOutput, "p", false, "Return a plain output list of hosts, with no IP address prefix? (default false)")
