@@ -452,6 +452,11 @@ func main() {
 	}
 
 	if len(compareHosts) > 0 {
+		_, shortCode := listShortcuts[compareHosts]
+		if shortCode {
+			compareHosts = listShortcuts[compareHosts]
+		}
+
 		hf2 := Hosts{}
 		hf2.Load(compareHosts)
 		if stats && !output {
