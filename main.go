@@ -384,8 +384,7 @@ func FlagSet() {
 	flag.BoolVar(&intersectionList, "intersection", false, "Return the list of intersection hosts? (default false)")
 	flag.BoolVar(&uniquelist, "unique", false, "List the unique domains in the comparison list")
 	flag.StringVar(&ipLocalhost, "ip", "0.0.0.0", "Localhost IP address")
-	flag.StringVar(&mainHosts, "m", defaultMainHosts, `The main list of hosts to analyze, or serve as a basis for comparison.
-A shortcut code, a full URL, or a local file.
+	flag.StringVar(&mainHosts, "m", defaultMainHosts, `The main list of hosts to analyze, or serve as a basis for comparison. A shortcut code, a full URL, or a local file.
 
 Shortcut codes
 ==============
