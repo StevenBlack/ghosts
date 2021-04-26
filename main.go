@@ -377,14 +377,36 @@ func reverse(a []string) []string {
 }
 
 func FlagSet() {
-	defaultSource := "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
+	defaultMainHosts := "base"
 	flag.StringVar(&compareHosts, "c", "", "Hosts list to compare. A full URL, or a local file.\nUse the -m option for the main comparison list.\nUse the -clip option to use what is on the system clipboard.")
 	flag.BoolVar(&sysclipboard, "clip", false, "The comparison hosts are in the system clipboard")
 	flag.BoolVar(&addDefaults, "d", false, "Include default hosts at the top of file.")
 	flag.BoolVar(&intersectionList, "intersection", false, "Return the list of intersection hosts? (default false)")
 	flag.BoolVar(&uniquelist, "unique", false, "List the unique domains in the comparison list")
 	flag.StringVar(&ipLocalhost, "ip", "0.0.0.0", "Localhost IP address")
-	flag.StringVar(&mainHosts, "m", defaultSource, "The main list of hosts to analyze, or serve as a basis for comparison.\nA full URL, or a local file.\n")
+	flag.StringVar(&mainHosts, "m", defaultMainHosts, `The main list of hosts to analyze, or serve as a basis for comparison.
+A shortcut code, a full URL, or a local file.
+
+Shortcut codes
+==============
+The following shortcut codes can be used to select among preset main lists.
+-m b or -m base // use Steven Black's base list.
+-m f    // use alternates/fakenews/hosts
+-m fg   // use alternates/fakenews-gambling/hosts
+-m fgp  // use alternates/fakenews-gambling-porn/hosts
+-m fgps // use alternates/fakenews-gambling-porn-social/hosts
+-m fgs  // use alternates/fakenews-gambling-social/hosts
+-m fp   // use alternates/fakenews-porn/hosts
+-m fps  // use alternates/fakenews-porn-social/hosts
+-m fs   // use alternates/fakenews-social/hosts
+-m g    // use alternates/gambling/hosts
+-m gp   // use alternates/gambling-porn/hosts
+-m gps  // use alternates/gambling-porn-social/hosts
+-m gs   // use alternates/gambling-social/hosts
+-m p    // use alternates/porn/hosts
+-m ps   // use alternates/porn-social/hosts
+-m s    // use alternates/social/hosts
+`)
 	flag.BoolVar(&noheader, "noheader", false, "Remove the file header from output? (default false)")
 	flag.BoolVar(&output, "o", false, "Return the list of hosts? (default false)")
 	flag.BoolVar(&plainOutput, "p", false, "Return a plain output list of hosts, with no IP address prefix? (default false)")
@@ -399,6 +421,31 @@ func main() {
 	FlagSet()
 
 	hf1 := Hosts{}
+	mainHostsShortcuts := map[string]string{
+		"b":    "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",
+		"base": "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",
+		"f":    "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews/hosts",
+		"fg":   "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling/hosts",
+		"fgp":  "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts",
+		"fgps": "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn-social/hosts",
+		"fgs":  "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-social/hosts",
+		"fp":   "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-porn/hosts",
+		"fps":  "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-porn-social/hosts",
+		"fs":   "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-social/hosts",
+		"g":    "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling/hosts",
+		"gp":   "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn/hosts",
+		"gps":  "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn-social/hosts",
+		"gs":   "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-social/hosts",
+		"p":    "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn/hosts",
+		"ps":   "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn-social/hosts",
+		"s":    "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/social/hosts",
+	}
+
+	_, shortCode := mainHostsShortcuts[mainHosts]
+	if shortCode {
+		mainHosts = mainHostsShortcuts[mainHosts]
+	}
+
 	hf1.Load(mainHosts)
 
 	if stats && !output {
