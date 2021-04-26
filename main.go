@@ -377,14 +377,14 @@ func reverse(a []string) []string {
 }
 
 func FlagSet() {
-	defaultSource := "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
+        defaultMainHosts := "base"
 	flag.StringVar(&compareHosts, "c", "", "Hosts list to compare. A full URL, or a local file.\nUse the -m option for the main comparison list.\nUse the -clip option to use what is on the system clipboard.")
 	flag.BoolVar(&sysclipboard, "clip", false, "The comparison hosts are in the system clipboard")
 	flag.BoolVar(&addDefaults, "d", false, "Include default hosts at the top of file.")
 	flag.BoolVar(&intersectionList, "intersection", false, "Return the list of intersection hosts? (default false)")
 	flag.BoolVar(&uniquelist, "unique", false, "List the unique domains in the comparison list")
 	flag.StringVar(&ipLocalhost, "ip", "0.0.0.0", "Localhost IP address")
-	flag.StringVar(&mainHosts, "m", defaultSource, "The main list of hosts to analyze, or serve as a basis for comparison.\nA full URL, or a local file.\n")
+        flag.StringVar(&mainHosts, "m", defaultMainHosts, "The main list of hosts to analyze, or serve as a basis for comparison.\nA full URL, or a local file.\n")
 	flag.BoolVar(&noheader, "noheader", false, "Remove the file header from output? (default false)")
 	flag.BoolVar(&output, "o", false, "Return the list of hosts? (default false)")
 	flag.BoolVar(&plainOutput, "p", false, "Return a plain output list of hosts, with no IP address prefix? (default false)")
