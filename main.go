@@ -421,7 +421,7 @@ func main() {
 	FlagSet()
 
 	hf1 := Hosts{}
-	mainHostsShortcuts := map[string]string{
+	listShortcuts := map[string]string{
 		"b":    "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",
 		"base": "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",
 		"f":    "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews/hosts",
@@ -441,9 +441,9 @@ func main() {
 		"s":    "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/social/hosts",
 	}
 
-	_, shortCode := mainHostsShortcuts[mainHosts]
+	_, shortCode := listShortcuts[mainHosts]
 	if shortCode {
-		mainHosts = mainHostsShortcuts[mainHosts]
+		mainHosts = listShortcuts[mainHosts]
 	}
 
 	hf1.Load(mainHosts)
