@@ -378,7 +378,31 @@ func reverse(a []string) []string {
 
 func FlagSet() {
 	defaultMainHosts := "base"
-	flag.StringVar(&compareHosts, "c", "", "Hosts list to compare. A full URL, or a local file.\nUse the -m option for the main comparison list.\nUse the -clip option to use what is on the system clipboard.")
+	flag.StringVar(&compareHosts, "c", "", `Hosts list to compare.
+A shortcut code, full URL, or a local file.
+Use the -m option for the main comparison list.
+Use the -clip option to use what is on the system clipboard.
+
+Shortcut codes
+==============
+The following shortcut codes can be used to select among preset main lists.
+-c b or -m base // use Steven Black's base list.
+-c f    // use alternates/fakenews/hosts
+-c fg   // use alternates/fakenews-gambling/hosts
+-c fgp  // use alternates/fakenews-gambling-porn/hosts
+-c fgps // use alternates/fakenews-gambling-porn-social/hosts
+-c fgs  // use alternates/fakenews-gambling-social/hosts
+-c fp   // use alternates/fakenews-porn/hosts
+-c fps  // use alternates/fakenews-porn-social/hosts
+-c fs   // use alternates/fakenews-social/hosts
+-c g    // use alternates/gambling/hosts
+-c gp   // use alternates/gambling-porn/hosts
+-c gps  // use alternates/gambling-porn-social/hosts
+-c gs   // use alternates/gambling-social/hosts
+-c p    // use alternates/porn/hosts
+-c ps   // use alternates/porn-social/hosts
+-c s    // use alternates/social/hosts
+`)
 	flag.BoolVar(&sysclipboard, "clip", false, "The comparison hosts are in the system clipboard")
 	flag.BoolVar(&addDefaults, "d", false, "Include default hosts at the top of file.")
 	flag.BoolVar(&intersectionList, "intersection", false, "Return the list of intersection hosts? (default false)")
@@ -421,7 +445,7 @@ func main() {
 	FlagSet()
 
 	hf1 := Hosts{}
-	mainHostsShortcuts := map[string]string{
+	listShortcuts := map[string]string{
 		"b":    "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",
 		"base": "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",
 		"f":    "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews/hosts",
@@ -441,9 +465,9 @@ func main() {
 		"s":    "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/social/hosts",
 	}
 
-	_, shortCode := mainHostsShortcuts[mainHosts]
+	_, shortCode := listShortcuts[mainHosts]
 	if shortCode {
-		mainHosts = mainHostsShortcuts[mainHosts]
+		mainHosts = listShortcuts[mainHosts]
 	}
 
 	hf1.Load(mainHosts)
@@ -453,6 +477,11 @@ func main() {
 	}
 
 	if len(compareHosts) > 0 {
+		_, shortCode := listShortcuts[compareHosts]
+		if shortCode {
+			compareHosts = listShortcuts[compareHosts]
+		}
+
 		hf2 := Hosts{}
 		hf2.Load(compareHosts)
 		if stats && !output {
