@@ -19,9 +19,30 @@ Here is what `ghosts` does:
 $ ./ghosts -h
 Usage of ./ghosts:
   -c string
-        Hosts list to compare. A full URL, or a local file.
-        Use the -m option for the main comparison list.
-        Use the -clip option to use what is on the system clipboard.
+    	Hosts list to compare.
+    	A shortcut code, full URL, or a local file.
+    	Use the -m option for the main comparison list.
+    	Use the -clip option to use what is on the system clipboard.
+
+    	Shortcut codes
+    	==============
+    	The following shortcut codes can be used to select among preset main lists.
+    	-c b or -m base // use Steven Black's base list.
+    	-c f    // use alternates/fakenews/hosts
+    	-c fg   // use alternates/fakenews-gambling/hosts
+    	-c fgp  // use alternates/fakenews-gambling-porn/hosts
+    	-c fgps // use alternates/fakenews-gambling-porn-social/hosts
+    	-c fgs  // use alternates/fakenews-gambling-social/hosts
+    	-c fp   // use alternates/fakenews-porn/hosts
+    	-c fps  // use alternates/fakenews-porn-social/hosts
+    	-c fs   // use alternates/fakenews-social/hosts
+    	-c g    // use alternates/gambling/hosts
+    	-c gp   // use alternates/gambling-porn/hosts
+    	-c gps  // use alternates/gambling-porn-social/hosts
+    	-c gs   // use alternates/gambling-social/hosts
+    	-c p    // use alternates/porn/hosts
+    	-c ps   // use alternates/porn-social/hosts
+    	-c s    // use alternates/social/hosts
   -clip
         The comparison hosts are in the system clipboard
   -d    Include default hosts at the top of file.
