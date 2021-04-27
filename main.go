@@ -386,7 +386,9 @@ Use the -clip option to use what is on the system clipboard.
 Shortcut codes
 ==============
 The following shortcut codes can be used to select among preset main lists.
--c b or -m base // use Steven Black's base list.
+
+Amalgamated lists' shortcuts:
+-c b or -m base // use Steven Black's base amalgamated list.
 -c f    // use alternates/fakenews/hosts
 -c fg   // use alternates/fakenews-gambling/hosts
 -c fgp  // use alternates/fakenews-gambling-porn/hosts
@@ -402,6 +404,36 @@ The following shortcut codes can be used to select among preset main lists.
 -c p    // use alternates/porn/hosts
 -c ps   // use alternates/porn-social/hosts
 -c s    // use alternates/social/hosts
+
+Source lists' shortcuts:
+-c adaway                // adaway.github.io
+-c add2o7net             // FadeMind add.2o7Net hosts
+-c adddead               // FadeMind add.Dead hosts
+-c addrisk               // FadeMind add.Risk hosts
+-c addspam               // FadeMind add.Spam hosts
+-c adguard               // AdguardTeam cname-trackers
+-c baddboyz              // mitchellkrogza Badd-Boyz-Hosts
+-c clefspear             // Clefspeare13 pornhosts
+-c digitalside           // davidonzo Threat-Intel
+-c fakenews              // marktron/fakenews
+-c hostsvn               // bigdargon hostsVN
+-c kadhosts              // PolishFiltersTeam
+-c metamask              // MetaMask eth-phishing hosts
+-c mvps                  // //winhelp2002.mvps.or
+-c orca                  // orca.pet notonmyshift hosts
+-c shady                 // hreyasminocha shady hosts
+-c sinfonietta-gambling
+-c sinfonietta-porn
+-c sinfonietta-snuff
+-c sinfonietta-social
+-c someonewhocares       // Sam Pollock someonewhocares.org
+-c stevenblack           // Steven Black ad-hoc list
+-c tiuxo-porn
+-c tiuxo-social
+-c tiuxo                 // tiuxo list.
+-c uncheckyads           // FadeMind  UncheckyAds
+-c urlhaus               // urlhaus.abuse.ch
+-c yoyo                  // Peter Lowe yoyo.org
 `)
 	flag.BoolVar(&sysclipboard, "clip", false, "The comparison hosts are in the system clipboard")
 	flag.BoolVar(&addDefaults, "d", false, "Include default hosts at the top of file.")
@@ -410,27 +442,7 @@ The following shortcut codes can be used to select among preset main lists.
 	flag.StringVar(&ipLocalhost, "ip", "0.0.0.0", "Localhost IP address")
 	flag.StringVar(&mainHosts, "m", defaultMainHosts, `The main list of hosts to analyze, or serve as a basis for comparison.
 A shortcut code, a full URL, or a local file.
-
-Shortcut codes
-==============
-The following shortcut codes can be used to select among preset main lists.
--m b or -m base // use Steven Black's base list.
--m f    // use alternates/fakenews/hosts
--m fg   // use alternates/fakenews-gambling/hosts
--m fgp  // use alternates/fakenews-gambling-porn/hosts
--m fgps // use alternates/fakenews-gambling-porn-social/hosts
--m fgs  // use alternates/fakenews-gambling-social/hosts
--m fp   // use alternates/fakenews-porn/hosts
--m fps  // use alternates/fakenews-porn-social/hosts
--m fs   // use alternates/fakenews-social/hosts
--m g    // use alternates/gambling/hosts
--m gp   // use alternates/gambling-porn/hosts
--m gps  // use alternates/gambling-porn-social/hosts
--m gs   // use alternates/gambling-social/hosts
--m p    // use alternates/porn/hosts
--m ps   // use alternates/porn-social/hosts
--m s    // use alternates/social/hosts
-`)
+See the -c flag for the list of shortcut codes.`)
 	flag.BoolVar(&noheader, "noheader", false, "Remove the file header from output? (default false)")
 	flag.BoolVar(&output, "o", false, "Return the list of hosts? (default false)")
 	flag.BoolVar(&plainOutput, "p", false, "Return a plain output list of hosts, with no IP address prefix? (default false)")
@@ -446,23 +458,51 @@ func main() {
 
 	hf1 := Hosts{}
 	listShortcuts := map[string]string{
-		"b":    "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",
-		"base": "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",
-		"f":    "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews/hosts",
-		"fg":   "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling/hosts",
-		"fgp":  "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts",
-		"fgps": "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn-social/hosts",
-		"fgs":  "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-social/hosts",
-		"fp":   "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-porn/hosts",
-		"fps":  "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-porn-social/hosts",
-		"fs":   "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-social/hosts",
-		"g":    "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling/hosts",
-		"gp":   "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn/hosts",
-		"gps":  "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn-social/hosts",
-		"gs":   "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-social/hosts",
-		"p":    "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn/hosts",
-		"ps":   "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn-social/hosts",
-		"s":    "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/social/hosts",
+		"b":                    "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",
+		"base":                 "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",
+		"f":                    "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews/hosts",
+		"fg":                   "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling/hosts",
+		"fgp":                  "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts",
+		"fgps":                 "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn-social/hosts",
+		"fgs":                  "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-social/hosts",
+		"fp":                   "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-porn/hosts",
+		"fps":                  "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-porn-social/hosts",
+		"fs":                   "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-social/hosts",
+		"g":                    "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling/hosts",
+		"gp":                   "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn/hosts",
+		"gps":                  "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn-social/hosts",
+		"gs":                   "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-social/hosts",
+		"p":                    "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn/hosts",
+		"ps":                   "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn-social/hosts",
+		"s":                    "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/social/hosts",
+		"adaway":               "https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt",
+		"add2o7net":            "https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.2o7Net/hosts",
+		"adddead":              "https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Dead/hosts",
+		"addrisk":              "https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Risk/hosts",
+		"addspam":              "https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Spam/hosts",
+		"adguard":              "https://raw.githubusercontent.com/AdguardTeam/cname-trackers/master/combined_disguised_trackers_justdomains.txt",
+		"baddboyz":             "https://raw.githubusercontent.com/mitchellkrogza/Badd-Boyz-Hosts/master/hosts",
+		"clefspear":            "https://raw.githubusercontent.com/Clefspeare13/pornhosts/master/0.0.0.0/hosts",
+		"digitalside":          "https://raw.githubusercontent.com/davidonzo/Threat-Intel/master/lists/latestdomains.piHole.txt",
+		"fakenews":             "https://raw.githubusercontent.com/marktron/fakenews/master/fakenews",
+		"hostsvn":              "https://raw.githubusercontent.com/bigdargon/hostsVN/master/option/hosts-VN",
+		"kadhosts":             "https://raw.githubusercontent.com/PolishFiltersTeam/KADhosts/master/KADhosts.txt",
+		"metamask":             "https://raw.githubusercontent.com/MetaMask/eth-phishing-detect/master/src/hosts.txt",
+		"mvps":                 "https://winhelp2002.mvps.org/hosts.txt",
+		"orca":                 "https://orca.pet/notonmyshift/hosts.txt",
+		"shady":                "https://raw.githubusercontent.com/shreyasminocha/shady-hosts/main/hosts",
+		"sinfonietta-gambling": "https://raw.githubusercontent.com/Sinfonietta/hostfiles/master/gambling-hosts",
+		"sinfonietta-porn":     "https://raw.githubusercontent.com/Sinfonietta/hostfiles/master/pornography-hosts",
+		"sinfonietta-snuff":    "https://raw.githubusercontent.com/Sinfonietta/hostfiles/master/snuff-hosts",
+		"sinfonietta-social":   "https://raw.githubusercontent.com/Sinfonietta/hostfiles/master/social-hosts",
+		"someonewhocares":      "https://someonewhocares.org/hosts/zero/hosts",
+		"stevenblack":          "https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts",
+		"tiuxo-porn":           "https://raw.githubusercontent.com/tiuxo/hosts/master/porn",
+		"tiuxo-social":         "https://raw.githubusercontent.com/tiuxo/hosts/master/social",
+		"tiuxo":                "https://raw.githubusercontent.com/tiuxo/hosts/master/ads",
+		"uncheckyads":          "https://raw.githubusercontent.com/FadeMind/hosts.extras/master/UncheckyAds/hosts",
+		"urlhaus":              "https://urlhaus.abuse.ch/downloads/hostfile/",
+		"yoyo":                 "https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&mimetype=plaintext&useip=0.0.0.0",
 	}
 
 	_, shortCode := listShortcuts[mainHosts]
