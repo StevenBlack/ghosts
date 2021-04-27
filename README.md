@@ -163,50 +163,54 @@ skipping many lines for brevity
 
 **Compare two hosts files, local or remote, and assess their intersection** by specifying `-m <location>` option for the main hosts file and `-c <location>` option for the second comparison file.
 
-Let's compare the **someonewhocares.org** hosts file (14,401 domains) to the one at **mvps.org** (10,473 domains).  The basic report tells us there are 1,548 domains in the interseation of the two.
+Let's compare the **someonewhocares.org** hosts file (15,474 domains) to the one at **mvps.org** (8,730 domains).  The basic report tells us there are 1,354 domains in the interseation of the two.
+
+Here we use **shortcut presets** to specify the two lists to compare, but we could have specified full URLs for either source.
 
 ```
-$ ./ghosts -m https://someonewhocares.org/hosts/zero/hosts -c http://winhelp2002.mvps.org/hosts.txt
---------------------------------------------------------------------------------
+$ ./ghosts -m someonewhocares -c mvps
+----------------------------------------
 Base hosts file summary:
---------------------------------------------------------------------------------
+----------------------------------------
 Location: https://someonewhocares.org/hosts/zero/hosts
-Domains: 14,401
-Bytes: 417 kB
---------------------------------------------------------------------------------
---------------------------------------------------------------------------------
+Domains: 15,474
+Bytes: 445 kB
+----------------------------------------
+----------------------------------------
 Compared hosts file summary:
---------------------------------------------------------------------------------
-Location: http://winhelp2002.mvps.org/hosts.txt
-Domains: 10,473
-Bytes: 392 kB
---------------------------------------------------------------------------------
-Intersection: 1,548 domains
+----------------------------------------
+Location: https://winhelp2002.mvps.org/hosts.txt
+Domains: 8,730
+Bytes: 335 kB
+----------------------------------------
+Intersection: 1,354 domains
 ```
 
 **Compare two hosts files, local or remote, and LIST their intersection** by specifying `-m <location>` option for the main hosts file, `-c <location>` option for the second comparison file, and add the `--intersection` flag to get the detailed list of the intersecting domains.
 
 Let's compare the **someonewhocares.org** hosts file (14,401 domains) to the one at **mvps.org** (10,473 domains).  The basic report shows us all 1,548 domains in the interseation of the two.
 
+Here we use **shortcut presets** to specify the two lists to compare, but we could have specified full URLs for either source.
+
 ```
-$ ./ghosts -m https://someonewhocares.org/hosts/zero/hosts -c http://winhelp2002.mvps.org/hosts.txt --intersection
+$ ./ghosts -m someonewhocares -c mvps --intersection
 --------------------------------------------------------------------------------
 Base hosts file summary:
 --------------------------------------------------------------------------------
 Location: https://someonewhocares.org/hosts/zero/hosts
-Domains: 14,401
-Bytes: 417 kB
+Domains: 15,474
+Bytes: 445 kB
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 Compared hosts file summary:
 --------------------------------------------------------------------------------
 Location: http://winhelp2002.mvps.org/hosts.txt
-Domains: 10,473
-Bytes: 392 kB
+Domains: 8,730
+Bytes: 335 kB
 --------------------------------------------------------------------------------
 intersection: [006.free-counter.co.uk 102.112.2o7.net 102.122.2o7.net 122.2o7.net 192.168.112.2o7.net
 1ca.cqcounter.com 1uk.cqcounter.com 1up.us.intellitxt.com 1us.cqcounter.com .... long list ]
-Intersection: 1,548 domains
+Intersection: 1,354 domains
 ```
 
 **Compare two hosts files, local or remote, and list what's unique in the second file** by specifying `-m <location>` option for the main hosts file, `-c <location>` option for the second comparison file, and add the `--unique` flag to get the list of domains in the comparison file that are not in the main hoss file.
