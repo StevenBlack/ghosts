@@ -27,7 +27,9 @@ Usage of ./ghosts:
     	Shortcut codes
     	==============
     	The following shortcut codes can be used to select among preset main lists.
-    	-c b or -m base // use Steven Black's base list.
+
+    	Amalgamated lists' shortcuts:
+    	-c b or -m base // use Steven Black's base amalgamated list.
     	-c f    // use alternates/fakenews/hosts
     	-c fg   // use alternates/fakenews-gambling/hosts
     	-c fgp  // use alternates/fakenews-gambling-porn/hosts
@@ -43,48 +45,59 @@ Usage of ./ghosts:
     	-c p    // use alternates/porn/hosts
     	-c ps   // use alternates/porn-social/hosts
     	-c s    // use alternates/social/hosts
+
+    	Source lists' shortcuts:
+    	-c adaway                // adaway.github.io
+    	-c add2o7net             // FadeMind add.2o7Net hosts
+    	-c adddead               // FadeMind add.Dead hosts
+    	-c addrisk               // FadeMind add.Risk hosts
+    	-c addspam               // FadeMind add.Spam hosts
+    	-c adguard               // AdguardTeam cname-trackers
+    	-c baddboyz              // mitchellkrogza Badd-Boyz-Hosts
+    	-c clefspear             // Clefspeare13 pornhosts
+    	-c digitalside           // davidonzo Threat-Intel
+    	-c fakenews              // marktron/fakenews
+    	-c hostsvn               // bigdargon hostsVN
+    	-c kadhosts              // PolishFiltersTeam
+    	-c metamask              // MetaMask eth-phishing hosts
+    	-c mvps                  // //winhelp2002.mvps.or
+    	-c orca                  // orca.pet notonmyshift hosts
+    	-c shady                 // hreyasminocha shady hosts
+    	-c sinfonietta-gambling
+    	-c sinfonietta-porn
+    	-c sinfonietta-snuff
+    	-c sinfonietta-social
+    	-c someonewhocares       // Sam Pollock someonewhocares.org
+    	-c stevenblack           // Steven Black ad-hoc list
+    	-c tiuxo-porn
+    	-c tiuxo-social
+    	-c tiuxo                 // tiuxo list.
+    	-c uncheckyads           // FadeMind  UncheckyAds
+    	-c urlhaus               // urlhaus.abuse.ch
+    	-c yoyo                  // Peter Lowe yoyo.org
+
   -clip
-        The comparison hosts are in the system clipboard
-  -d    Include default hosts at the top of file.
+    	The comparison hosts are in the system clipboard
+  -d	Include default hosts at the top of file.
   -intersection
-        Return the list of intersection hosts? (default false)
+    	Return the list of intersection hosts? (default false)
   -ip string
-        Localhost IP address (default "0.0.0.0")
+    	Localhost IP address (default "0.0.0.0")
   -m string
     	The main list of hosts to analyze, or serve as a basis for comparison.
     	A shortcut code, a full URL, or a local file.
-
-    	Shortcut codes
-    	==============
-    	The following shortcut codes can be used to select among preset main lists.
-    	-m b or -m base // use Steven Black's base list.
-    	-m f    // use alternates/fakenews/hosts
-    	-m fg   // use alternates/fakenews-gambling/hosts
-    	-m fgp  // use alternates/fakenews-gambling-porn/hosts
-    	-m fgps // use alternates/fakenews-gambling-porn-social/hosts
-    	-m fgs  // use alternates/fakenews-gambling-social/hosts
-    	-m fp   // use alternates/fakenews-porn/hosts
-    	-m fps  // use alternates/fakenews-porn-social/hosts
-    	-m fs   // use alternates/fakenews-social/hosts
-    	-m g    // use alternates/gambling/hosts
-    	-m gp   // use alternates/gambling-porn/hosts
-    	-m gps  // use alternates/gambling-porn-social/hosts
-    	-m gs   // use alternates/gambling-social/hosts
-    	-m p    // use alternates/porn/hosts
-    	-m ps   // use alternates/porn-social/hosts
-    	-m s    // use alternates/social/hosts
-    	 (default "base", which is https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts)
+    	See the -c flag for the list of shortcut codes. (default "base")
   -noheader
-        Remove the file header from output? (default false)
-  -o    Return the list of hosts? (default false)
-  -p    Return a plain output list of hosts, with no IP address prefix? (default false)
-  -s    Sort the hosts? (default false)
+    	Remove the file header from output? (default false)
+  -o	Return the list of hosts? (default false)
+  -p	Return a plain output list of hosts, with no IP address prefix? (default false)
+  -s	Sort the hosts? (default false)
   -stats
-        display stats? (default true)
+    	display stats? (default true)
   -tld
-        Return the list of TLD and their tally (default false)
+    	Return the list of TLD and their tally (default false)
   -unique
-        List the unique domains in the comparison list
+    	List the unique domains in the comparison list
 ```
 
 ### Summarize statistics from any hosts file
