@@ -15,7 +15,7 @@ Here is what `ghosts` does:
 
 ### Get help just as you might expect
 
-```bash
+```
 $ ./ghosts -h
 Usage of ./ghosts:
   -c string
