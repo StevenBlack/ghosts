@@ -28,7 +28,7 @@ Usage of ./ghosts:
     	==============
     	The following shortcut codes can be used to select among preset main lists.
 
-    	Amalgamated lists' shortcuts:
+    	Amalgamated list shortcuts:
     	-c b or -m base // use Steven Black's base amalgamated list.
     	-c f    // use alternates/fakenews/hosts
     	-c fg   // use alternates/fakenews-gambling/hosts
@@ -46,7 +46,7 @@ Usage of ./ghosts:
     	-c ps   // use alternates/porn-social/hosts
     	-c s    // use alternates/social/hosts
 
-    	Source lists' shortcuts:
+    	Source list shortcuts:
     	-c adaway                // adaway.github.io
     	-c add2o7net             // FadeMind add.2o7Net hosts
     	-c adddead               // FadeMind add.Dead hosts
