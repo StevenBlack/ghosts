@@ -19,12 +19,15 @@ import (
 
 // Expose the command line flags we support
 var mainHosts, compareHosts, ipLocalhost string
-var addDefaults, alphaSort, output, plainOutput, stats, intersectionList, tld, noheader, sysclipboard, uniquelist bool
+var addDefaults, alphaSort, output, plainOutput, stats, intersectionList, tld, noheader, sysclipboard, uniquelist, version bool
 
 type TLDtally struct {
 	tld   string
 	tally int
 }
+
+// Update the version # before every release.
+const VERSION = "v0.2.3.Beta"
 
 // A Hosts struct holds all the facets of a collection of hosts.
 type Hosts struct {
@@ -449,6 +452,7 @@ See the -c flag for the list of shortcut codes.`)
 	flag.BoolVar(&alphaSort, "s", false, "Sort the hosts? (default false)")
 	flag.BoolVar(&stats, "stats", true, "display stats?")
 	flag.BoolVar(&tld, "tld", false, "Return the list of TLD and their tally (default false)")
+	flag.BoolVar(&version, "v", false, "Return the current version")
 	flag.Parse()
 }
 
@@ -508,6 +512,11 @@ func main() {
 	_, shortCode := listShortcuts[mainHosts]
 	if shortCode {
 		mainHosts = listShortcuts[mainHosts]
+	}
+
+	if version {
+		fmt.Println("The current version is:", VERSION)
+		os.Exit(0)
 	}
 
 	hf1.Load(mainHosts)
