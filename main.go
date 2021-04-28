@@ -407,7 +407,7 @@ The following shortcut codes can be used to select among preset main lists.
 -c ps   // use alternates/porn-social/hosts
 -c s    // use alternates/social/hosts
 `)
-	flag.BoolVar(&version, "v", false, "return current version")
+	flag.BoolVar(&version, "v", false, "Return current version")
 	flag.BoolVar(&sysclipboard, "clip", false, "The comparison hosts are in the system clipboard")
 	flag.BoolVar(&addDefaults, "d", false, "Include default hosts at the top of file.")
 	flag.BoolVar(&intersectionList, "intersection", false, "Return the list of intersection hosts? (default false)")
