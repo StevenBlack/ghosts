@@ -18,18 +18,21 @@ import (
 )
 
 // Expose the command line flags we support
-var mainHosts, compareHosts, ipLocalhost, version string
-var addDefaults, alphaSort, output, plainOutput, stats, intersectionList, tld, noheader, sysclipboard, uniquelist bool
+var mainHosts, compareHosts, ipLocalhost string
+var addDefaults, alphaSort, output, plainOutput, stats, intersectionList, tld, noheader, sysclipboard, uniquelist, version bool
 
 type TLDtally struct {
 	tld   string
 	tally int
 }
 
+// Update version # after
+const GhostsVersion = "v0.3.1"
+
 // A Hosts struct holds all the facets of a collection of hosts.
 type Hosts struct {
 	Raw []byte
-	// GhostVersion string
+
 	Location     string
 	Header       []string
 	Domains      []string
@@ -404,7 +407,7 @@ The following shortcut codes can be used to select among preset main lists.
 -c ps   // use alternates/porn-social/hosts
 -c s    // use alternates/social/hosts
 `)
-	flag.StringVar(&version, "v", "v0.3.1", "return the current version")
+	flag.BoolVar(&version, "v", false, "return current version")
 	flag.BoolVar(&sysclipboard, "clip", false, "The comparison hosts are in the system clipboard")
 	flag.BoolVar(&addDefaults, "d", false, "Include default hosts at the top of file.")
 	flag.BoolVar(&intersectionList, "intersection", false, "Return the list of intersection hosts? (default false)")
@@ -472,7 +475,10 @@ func main() {
 		mainHosts = listShortcuts[mainHosts]
 	}
 
-	fmt.Println("v0.3.1", version)
+	if version {
+		fmt.Println("Current version is:", GhostsVersion)
+		os.Exit(0)
+	}
 
 	hf1.Load(mainHosts)
 
