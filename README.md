@@ -98,6 +98,8 @@ Usage of ./ghosts:
     	Return the list of TLD and their tally (default false)
   -unique
     	List the unique domains in the comparison list
+  -v	
+		Return the current version
 ```
 
 ### Summarize statistics from any hosts file
