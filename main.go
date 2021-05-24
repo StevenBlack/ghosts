@@ -422,7 +422,7 @@ Source lists' shortcuts:
 -c hostsvn               // bigdargon hostsVN
 -c kadhosts              // PolishFiltersTeam
 -c metamask              // MetaMask eth-phishing hosts
--c mvps                  // //winhelp2002.mvps.or
+-c mvps                  // winhelp2002.mvps.or
 -c orca                  // orca.pet notonmyshift hosts
 -c shady                 // hreyasminocha shady hosts
 -c sinfonietta-gambling
