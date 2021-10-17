@@ -132,24 +132,22 @@ Bytes: 417 kB
 
 ```
 $ ./ghosts -m https://someonewhocares.org/hosts/zero/hosts -tld
---------------------------------------------------------------------------------
+----------------------------------------
 Base hosts file summary:
---------------------------------------------------------------------------------
+----------------------------------------
 Location: https://someonewhocares.org/hosts/zero/hosts
-Domains: 14,401
-Bytes: 417 kB
-TLD tally:
-   com: 8,683
-   net: 2,231
-   info: 479
-   ru: 291
-   de: 232
-   pl: 181
-   org: 174
-   fr: 147
-   nl: 140
-   at: 133
-   uk: 117
+Domains: 16,933
+Bytes: 483 kB
+TLD tally:  (177 unique TLD)
+   com: 10,093
+   net: 2,634
+   info: 563
+   ru: 296
+   de: 263
+   org: 241
+   pl: 186
+   nl: 184
+   uk: 158
 
 skipping many lines for brevity
 
