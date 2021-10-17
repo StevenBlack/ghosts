@@ -16,8 +16,8 @@ Here is what `ghosts` does:
 ### Get help just as you might expect
 
 ```
-$ ./ghosts -h
-Usage of ./ghosts:
+$ ghosts -h
+Usage of ghosts:
   -c string
     	Hosts list to compare.
     	A shortcut code, full URL, or a local file.
@@ -28,7 +28,7 @@ Usage of ./ghosts:
     	==============
     	The following shortcut codes can be used to select among preset main lists.
 
-    	Amalgamated list shortcuts:
+    	Amalgamated lists' shortcuts:
     	-c b or -m base // use Steven Black's base amalgamated list.
     	-c f    // use alternates/fakenews/hosts
     	-c fg   // use alternates/fakenews-gambling/hosts
@@ -46,7 +46,7 @@ Usage of ./ghosts:
     	-c ps   // use alternates/porn-social/hosts
     	-c s    // use alternates/social/hosts
 
-    	Source list shortcuts:
+    	Source lists' shortcuts:
     	-c adaway                // adaway.github.io
     	-c add2o7net             // FadeMind add.2o7Net hosts
     	-c adddead               // FadeMind add.Dead hosts
@@ -60,7 +60,7 @@ Usage of ./ghosts:
     	-c hostsvn               // bigdargon hostsVN
     	-c kadhosts              // PolishFiltersTeam
     	-c metamask              // MetaMask eth-phishing hosts
-    	-c mvps                  // //winhelp2002.mvps.or
+    	-c mvps                  // winhelp2002.mvps.or
     	-c orca                  // orca.pet notonmyshift hosts
     	-c shady                 // hreyasminocha shady hosts
     	-c sinfonietta-gambling
@@ -91,6 +91,8 @@ Usage of ./ghosts:
     	Remove the file header from output? (default false)
   -o	Return the list of hosts? (default false)
   -p	Return a plain output list of hosts, with no IP address prefix? (default false)
+  -root
+    	Return the list of root domains and their tally (default false)
   -s	Sort the hosts? (default false)
   -stats
     	display stats? (default true)
@@ -98,8 +100,7 @@ Usage of ./ghosts:
     	Return the list of TLD and their tally (default false)
   -unique
     	List the unique domains in the comparison list
-  -v	
-		Return the current version
+  -v	Return the current version
 ```
 
 ### Summarize statistics from any hosts file
@@ -159,6 +160,45 @@ skipping many lines for brevity
    ga: 1
    watch: 1
    ac: 1
+```
+**Additionally produce a root domain report** by using the `-root` option, like this:
+
+**Warning**: the `-root` option can produce thousands of lines of output. I recommend piping this to a file.
+
+```
+$ ghosts -m https://someonewhocares.org/hosts/zero/hosts -root
+----------------------------------------
+Base hosts file summary:
+----------------------------------------
+Location: https://someonewhocares.org/hosts/zero/hosts
+Domains: 16,933
+Bytes: 483 kB
+Root domain tally:  (9,723 unique root domais)
+   2o7.net: 460
+   hitbox.com: 362
+   2mdn.net: 213
+   p2l.info: 198
+   co.uk: 152
+   oewabox.at: 125
+   am15.net: 120
+   intellitxt.com: 107
+   doubleclick.net: 103
+   fastclick.net: 102
+   checkm8.com: 102
+   adtech.de: 69
+   focalink.com: 65
+   adtech.us: 65
+   adtech.fr: 65
+   esomniture.com: 64
+   msn.com: 63
+   cjt1.net: 63
+   thruport.com: 59
+   imrworldwide.com: 55
+   bravenet.com: 54
+   plus.com: 52
+
+skipping many (many!) lines for brevity
+
 ```
 
 **Compare two hosts files, local or remote, and assess their intersection** by specifying `-m <location>` option for the main hosts file and `-c <location>` option for the second comparison file.
