@@ -9,7 +9,6 @@ import (
 	"os"
 	"regexp"
 	"sort"
-	"strconv"
 	"strings"
 	"time"
 
@@ -79,7 +78,7 @@ func (h *Hosts) Summary(prefix string) string {
 		for _, t := range h.TLDtallies {
 			s = append(s, t.thing+": "+humanize.Comma(int64(t.tally)))
 		}
-		summary = append(summary, "TLD tally:  ("+strconv.Itoa(len(s))+" unique TLD)\n   "+strings.Join(s, "\n   "))
+		summary = append(summary, "TLD tally:  ("+humanize.Comma(int64(len(s)))+" unique TLD)\n   "+strings.Join(s, "\n   "))
 		summary = append(summary, strings.Repeat("-", sepLen))
 	}
 	if root {
@@ -87,7 +86,7 @@ func (h *Hosts) Summary(prefix string) string {
 		for _, t := range h.Roottallies {
 			s = append(s, t.thing+": "+humanize.Comma(int64(t.tally)))
 		}
-		summary = append(summary, "Root domain tally:  ("+strconv.Itoa(len(s))+" unique root domais)\n   "+strings.Join(s, "\n   "))
+		summary = append(summary, "Root domain tally:  ("+humanize.Comma(int64(len(s)))+" unique root domais)\n   "+strings.Join(s, "\n   "))
 		summary = append(summary, strings.Repeat("-", sepLen))
 	}
 
