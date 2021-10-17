@@ -23,10 +23,10 @@ const VERSION = "v0.2.3.Beta"
 
 // Expose the command line flags we support
 var mainHosts, compareHosts, ipLocalhost string
-var addDefaults, alphaSort, output, plainOutput, stats, intersectionList, tld, noheader, sysclipboard, uniquelist, version bool
+var addDefaults, alphaSort, output, plainOutput, stats, intersectionList, tld, noheader, sysclipboard, uniquelist, version, root bool
 
-type TLDtally struct {
-	tld   string
+type Thingtally struct {
+	thing string
 	tally int
 }
 
@@ -37,7 +37,9 @@ type Hosts struct {
 	Header       []string
 	Domains      []string
 	TLDs         map[string]int
-	TLDtallies   []TLDtally
+	TLDtallies   []Thingtally
+	Roots        map[string]int
+	Roottallies  []Thingtally
 	Duplicates   []string
 	Intersection []string
 	Unique       []string
@@ -51,7 +53,9 @@ func (h *Hosts) Reset() bool {
 	h.Header = []string{}
 	h.Domains = []string{}
 	h.TLDs = map[string]int{}
-	h.TLDtallies = []TLDtally{}
+	h.TLDtallies = []Thingtally{}
+	h.Roots = map[string]int{}
+	h.Roottallies = []Thingtally{}
 	h.Duplicates = []string{}
 	h.Intersection = []string{}
 	h.Unique = []string{}
@@ -73,13 +77,19 @@ func (h *Hosts) Summary(prefix string) string {
 	if tld {
 		var s []string
 		for _, t := range h.TLDtallies {
-			s = append(s, t.tld+": "+humanize.Comma(int64(t.tally)))
+			s = append(s, t.thing+": "+humanize.Comma(int64(t.tally)))
 		}
 		summary = append(summary, "TLD tally:  ("+strconv.Itoa(len(s))+" unique TLD)\n   "+strings.Join(s, "\n   "))
-		// summary = append(summary, strings.Join(s, "\n   "))
+		summary = append(summary, strings.Repeat("-", sepLen))
 	}
-
-	summary = append(summary, strings.Repeat("-", sepLen))
+	if root {
+		var s []string
+		for _, t := range h.Roottallies {
+			s = append(s, t.thing+": "+humanize.Comma(int64(t.tally)))
+		}
+		summary = append(summary, "Root domain tally:  ("+strconv.Itoa(len(s))+" unique root domais)\n   "+strings.Join(s, "\n   "))
+		summary = append(summary, strings.Repeat("-", sepLen))
+	}
 
 	return strings.Join(summary[:], "\n")
 }
@@ -155,39 +165,76 @@ func (h *Hosts) process() []string {
 	slc = slc[:j+1]
 
 	// tally TLDs
-	h.TLDs = make(map[string]int)
-	h.TLDtallies = []TLDtally{}
-	m := map[string]int{}
-	n := map[int][]string{}
-	for i := range slc {
-		ss := strings.Split(slc[i], ".")
-		if len(ss) > 1 {
-			s := ss[len(ss)-1]
-			_, ok := m[s]
-			if ok {
-				m[s] = m[s] + 1
-			} else {
-				m[s] = 1
+	if tld {
+		h.TLDs = make(map[string]int)
+		h.TLDtallies = []Thingtally{}
+		m := map[string]int{}
+		n := map[int][]string{}
+		for i := range slc {
+			ss := strings.Split(slc[i], ".")
+			if len(ss) > 1 {
+				s := ss[len(ss)-1]
+				_, ok := m[s]
+				if ok {
+					m[s] = m[s] + 1
+				} else {
+					m[s] = 1
+				}
+			}
+		}
+		var a []int
+		for k, v := range m {
+			n[v] = append(n[v], k)
+		}
+		for k := range n {
+			a = append(a, k)
+		}
+
+		sort.Sort(sort.Reverse(sort.IntSlice(a)))
+
+		for _, k := range a {
+			for _, s := range n[k] {
+				h.TLDs[s] = k
+				h.TLDtallies = append(h.TLDtallies, Thingtally{s, k})
 			}
 		}
 	}
-	var a []int
-	for k, v := range m {
-		n[v] = append(n[v], k)
-	}
-	for k := range n {
-		a = append(a, k)
-	}
 
-	sort.Sort(sort.Reverse(sort.IntSlice(a)))
+	// tally Roots
+	if root {
+		h.Roots = make(map[string]int)
+		h.Roottallies = []Thingtally{}
+		m := map[string]int{}
+		n := map[int][]string{}
+		for i := range slc {
+			ss := strings.Split(slc[i], ".")
+			if len(ss) > 1 {
+				s := ss[len(ss)-2] + "." + ss[len(ss)-1]
+				_, ok := m[s]
+				if ok {
+					m[s] = m[s] + 1
+				} else {
+					m[s] = 1
+				}
+			}
+		}
+		var a []int
+		for k, v := range m {
+			n[v] = append(n[v], k)
+		}
+		for k := range n {
+			a = append(a, k)
+		}
 
-	for _, k := range a {
-		for _, s := range n[k] {
-			h.TLDs[s] = k
-			h.TLDtallies = append(h.TLDtallies, TLDtally{s, k})
+		sort.Sort(sort.Reverse(sort.IntSlice(a)))
+
+		for _, k := range a {
+			for _, s := range n[k] {
+				h.Roots[s] = k
+				h.Roottallies = append(h.Roottallies, Thingtally{s, k})
+			}
 		}
 	}
-
 	// custom domain sorting
 	if alphaSort {
 		sort.Sort(domainSort(slc))
@@ -454,6 +501,7 @@ See the -c flag for the list of shortcut codes.`)
 	flag.BoolVar(&alphaSort, "s", false, "Sort the hosts? (default false)")
 	flag.BoolVar(&stats, "stats", true, "display stats?")
 	flag.BoolVar(&tld, "tld", false, "Return the list of TLD and their tally (default false)")
+	flag.BoolVar(&root, "root", false, "Return the list of root domains and their tally (default false)")
 	flag.BoolVar(&version, "v", false, "Return the current version")
 	flag.Parse()
 }
