@@ -18,7 +18,7 @@ import (
 )
 
 // Update the version # before every release.
-const VERSION = "v0.2.3.Beta"
+const VERSION = "v0.3"
 
 // Expose the command line flags we support
 var mainHosts, compareHosts, ipLocalhost string
