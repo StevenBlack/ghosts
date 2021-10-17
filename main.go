@@ -18,6 +18,9 @@ import (
 	"github.com/thoas/go-funk"
 )
 
+// Update the version # before every release.
+const VERSION = "v0.2.3.Beta"
+
 // Expose the command line flags we support
 var mainHosts, compareHosts, ipLocalhost string
 var addDefaults, alphaSort, output, plainOutput, stats, intersectionList, tld, noheader, sysclipboard, uniquelist, version bool
@@ -26,9 +29,6 @@ type TLDtally struct {
 	tld   string
 	tally int
 }
-
-// Update the version # before every release.
-const VERSION = "v0.2.3.Beta"
 
 // A Hosts struct holds all the facets of a collection of hosts.
 type Hosts struct {
