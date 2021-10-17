@@ -9,6 +9,7 @@ import (
 	"os"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 
@@ -74,7 +75,8 @@ func (h *Hosts) Summary(prefix string) string {
 		for _, t := range h.TLDtallies {
 			s = append(s, t.tld+": "+humanize.Comma(int64(t.tally)))
 		}
-		summary = append(summary, "TLD tally:\n   "+strings.Join(s, "\n   "))
+		summary = append(summary, "TLD tally:  ("+strconv.Itoa(len(s))+" unique TLD)\n   "+strings.Join(s, "\n   "))
+		// summary = append(summary, strings.Join(s, "\n   "))
 	}
 
 	summary = append(summary, strings.Repeat("-", sepLen))
